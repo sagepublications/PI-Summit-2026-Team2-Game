@@ -49,10 +49,14 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      # configure-pages reports where the site is actually hosted: "" for a
+      # root/custom/private *.pages.github.io domain, "/<repo>" for a
+      # project site on github.io. Never hard-code the sub-path.
+      - id: pages
+        uses: actions/configure-pages@v6
       - run: pnpm run build
         env:
-          VITE_BASE: /${{ github.event.repository.name }}/
-      - uses: actions/configure-pages@v6
+          VITE_BASE: ${{ steps.pages.outputs.base_path }}/
       - uses: actions/upload-pages-artifact@v5
         with:
           path: dist

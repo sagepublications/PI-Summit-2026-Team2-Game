@@ -54,7 +54,7 @@ docs/              spec
 
 `.github/workflows/ci.yml` runs `pnpm run check` on every PR and push to `main`, then deploys `main` to **GitHub Pages**.
 
-Pages is configured (Source: GitHub Actions). The game is live at `https://sagepublications.github.io/PI-Summit-2026-Team2-Game/`.
+Pages is configured (Source: GitHub Actions). The live URL is shown on the **Deploy to GitHub Pages** job / the `github-pages` environment in the repo (the org uses a private `*.pages.github.io` domain, so the site is served from its root — the workflow derives the correct base path automatically).
 
 ## Day-of checklist
 
