@@ -2,6 +2,7 @@ import { Container, Text } from 'pixi.js';
 import type { Scene } from './Scene';
 import type { GameResult } from './GameScene';
 import { Button } from '../ui/Button';
+import { isConfirmKey } from '../utils/input';
 import { theme } from '../ui/theme';
 
 export class GameOverScene implements Scene {
@@ -10,7 +11,7 @@ export class GameOverScene implements Scene {
   private readonly summary: Text;
   private readonly againButton: Button;
   private readonly onKey = (e: KeyboardEvent) => {
-    if (e.code === 'Space' || e.code === 'Enter') this.onPlayAgain();
+    if (isConfirmKey(e)) this.onPlayAgain();
   };
 
   constructor(result: GameResult, private readonly onPlayAgain: () => void) {
@@ -27,7 +28,6 @@ export class GameOverScene implements Scene {
     this.summary.anchor.set(0.5);
 
     this.againButton = new Button('Play again', () => this.onPlayAgain());
-    this.againButton.pivot.set(130, 32);
 
     this.container.addChild(this.title, this.summary, this.againButton);
   }

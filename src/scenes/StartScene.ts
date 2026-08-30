@@ -1,6 +1,7 @@
 import { Container, Text } from 'pixi.js';
 import type { Scene } from './Scene';
 import { Button } from '../ui/Button';
+import { isConfirmKey } from '../utils/input';
 import { theme } from '../ui/theme';
 
 export class StartScene implements Scene {
@@ -9,7 +10,7 @@ export class StartScene implements Scene {
   private readonly howTo: Text;
   private readonly startButton: Button;
   private readonly onKey = (e: KeyboardEvent) => {
-    if (e.code === 'Space' || e.code === 'Enter') this.onStart();
+    if (isConfirmKey(e)) this.onStart();
   };
 
   constructor(private readonly onStart: () => void) {
@@ -33,7 +34,6 @@ export class StartScene implements Scene {
     this.howTo.anchor.set(0.5);
 
     this.startButton = new Button('Start', () => this.onStart());
-    this.startButton.pivot.set(130, 32);
 
     this.container.addChild(this.title, this.howTo, this.startButton);
   }
@@ -51,6 +51,7 @@ export class StartScene implements Scene {
   resize(width: number, height: number): void {
     this.title.position.set(width / 2, height * 0.3);
     this.howTo.position.set(width / 2, height * 0.5);
+    this.howTo.style.wordWrapWidth = Math.min(700, width - 48);
     this.startButton.position.set(width / 2, height * 0.7);
   }
 }

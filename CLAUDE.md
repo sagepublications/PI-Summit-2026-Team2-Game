@@ -15,7 +15,9 @@ Fully client-side. **No** backend, React, Vue, ECS, or state-management librarie
 ## Content
 - Content lives in `content/game-content.csv` (one authored item = one row) and `content/balance.json`.
 - Schema is defined **once** in `src/types/content.ts` (Zod); build script and game both use it.
-- `pnpm run content` validates and writes `public/data/*.json`. Generated JSON **is committed**.
+- `pnpm run content` validates and writes `src/data/*.json` (imported + bundled). Generated JSON **is committed**; never edit it by hand.
+- CSV cells are strings: use `csvInt`/`csvNumber`/`csvEnum`/`csvBool`/`optionalText` helpers from `src/types/content.ts` for non-text columns.
+- Asset filenames must match disk exactly (case-sensitive on CI/Pages).
 - Never hard-code content or balance numbers in game logic.
 - Validation errors must name the spreadsheet row and the problem.
 

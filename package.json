@@ -5,7 +5,7 @@
   "type": "module",
   "packageManager": "pnpm@10.19.0",
   "engines": {
-    "node": ">=22"
+    "node": ">=22.12"
   },
   "scripts": {
     "dev": "vite",
@@ -14,9 +14,6 @@
     "content": "tsx scripts/build-content.ts",
     "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json",
     "check": "pnpm run content && pnpm run typecheck && vite build"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": ["esbuild"]
   },
   "dependencies": {
     "pixi.js": "^8.20.1"

@@ -1,0 +1,7 @@
+# Single-package repo; this file only carries pnpm settings.
+packages:
+  - .
+
+# esbuild (used by tsx) needs its postinstall to fetch the native binary.
+onlyBuiltDependencies:
+  - esbuild

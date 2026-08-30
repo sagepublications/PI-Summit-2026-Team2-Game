@@ -25,7 +25,7 @@ async function main(): Promise<void> {
   });
   document.getElementById('app')!.appendChild(app.canvas);
 
-  const data: GameData = await loadGameData();
+  const data: GameData = loadGameData();
   const scenes = new SceneManager(app);
 
   // Scene flow: Start -> Game -> Game Over -> (Play again) -> Start

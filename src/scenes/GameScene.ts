@@ -4,6 +4,7 @@ import type { GameData } from '../game/content';
 import type { ContentItem } from '../types/content';
 import { Button } from '../ui/Button';
 import { theme } from '../ui/theme';
+import { isConfirmKey } from '../utils/input';
 import { shuffle } from '../utils/random';
 
 export interface GameResult {
@@ -56,13 +57,12 @@ export class GameScene implements Scene {
     this.body.anchor.set(0.5, 0);
 
     this.nextButton = new Button('Next', () => this.advance());
-    this.nextButton.pivot.set(130, 32);
 
     this.container.addChild(this.hud, this.title, this.body, this.nextButton);
   }
 
   private readonly onKey = (e: KeyboardEvent) => {
-    if (e.code === 'Space' || e.code === 'Enter') this.advance();
+    if (isConfirmKey(e)) this.advance();
   };
 
   enter(): void {
@@ -80,6 +80,7 @@ export class GameScene implements Scene {
     this.hud.position.set(24, 20);
     this.title.position.set(width / 2, height * 0.25);
     this.body.position.set(width / 2, height * 0.35);
+    this.body.style.wordWrapWidth = Math.min(760, width - 48);
     this.nextButton.position.set(width / 2, height * 0.8);
   }
 

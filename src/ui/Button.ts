@@ -22,6 +22,8 @@ export class Button extends Container {
 
     this.draw(theme.colors.primary);
     this.addChild(this.bg, this.labelText);
+    // Position refers to the button's centre, whatever its size.
+    this.pivot.set(width / 2, height / 2);
 
     this.eventMode = 'static';
     this.cursor = 'pointer';

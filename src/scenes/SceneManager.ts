@@ -6,7 +6,9 @@ export class SceneManager {
 
   constructor(private readonly app: Application) {
     app.ticker.add((ticker) => this.current?.update(ticker.deltaMS / 1000));
-    window.addEventListener('resize', () => this.resizeCurrent());
+    // Pixi's ResizePlugin resizes on the next animation frame, so listen to the
+    // renderer (fires with the new size) rather than the window resize event.
+    app.renderer.on('resize', (w: number, h: number) => this.current?.resize(w, h));
   }
 
   get width(): number {

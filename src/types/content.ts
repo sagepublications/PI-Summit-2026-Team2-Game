@@ -13,7 +13,37 @@
  */
 import { z } from 'zod';
 
+// ---- Helpers for CSV columns (every CSV cell arrives as a STRING) -------------
+// Use these instead of bare z.number()/z.boolean(), which would reject every row.
+//   points: csvInt(0, 100),                      -> number
+//   weight: csvNumber(0, 1),                     -> number (decimals allowed)
+//   kind:   csvEnum(['good', 'bad', 'neutral']), -> 'good' | 'bad' | 'neutral'
+//   flag:   csvBool,                             -> boolean ("true"/"yes"/"1" -> true)
+//   note:   optionalText,                        -> string | undefined ("" -> undefined)
 const nonEmpty = (field: string) => z.string().trim().min(1, `${field} must not be empty`);
+export const optionalText = z.string().trim().optional().transform((v) => (v === '' ? undefined : v));
+export const csvNumber = (min: number, max: number) =>
+  z
+    .string()
+    .trim()
+    .regex(/^-?\d+(\.\d+)?$/, 'must be a number')
+    .transform(Number)
+    .pipe(z.number().min(min).max(max));
+export const csvInt = (min: number, max: number) =>
+  z
+    .string()
+    .trim()
+    .regex(/^-?\d+$/, 'must be a whole number')
+    .transform(Number)
+    .pipe(z.number().int().min(min).max(max));
+export const csvEnum = <const T extends readonly [string, ...string[]]>(values: T) =>
+  z.string().trim().pipe(z.enum(values));
+export const csvBool = z
+  .string()
+  .trim()
+  .toLowerCase()
+  .pipe(z.enum(['true', 'false', 'yes', 'no', '1', '0', '']))
+  .transform((v) => v === 'true' || v === 'yes' || v === '1');
 
 /** One independently authored piece of content == one spreadsheet row. */
 export const ContentItemSchema = z.object({
@@ -21,7 +51,7 @@ export const ContentItemSchema = z.object({
   title: nonEmpty('title'),
   text: nonEmpty('text'),
   /** Optional filename under public/assets/images/ (existence checked at build time). */
-  image: z.string().trim().optional().transform((v) => (v === '' ? undefined : v)),
+  image: optionalText,
 });
 export type ContentItem = z.infer<typeof ContentItemSchema>;
 

@@ -8,12 +8,12 @@ Browser game built with **TypeScript + PixiJS 8 + Vite + pnpm**. Fully client-si
 
 ```sh
 pnpm install
-pnpm run dev       # local dev server (opens browser)
+pnpm run dev       # local dev server
 pnpm run build     # production build -> dist/
 pnpm run check     # validate content + typecheck + build (must pass before merging)
 ```
 
-Requires Node ≥ 22 and pnpm 10 (`corepack enable` if pnpm isn't installed).
+Requires Node ≥ 22.12 (24 recommended) and pnpm 10 (`corepack enable` if pnpm isn't installed).
 
 ## How content works
 
@@ -22,10 +22,12 @@ Requires Node ≥ 22 and pnpm 10 (`corepack enable` if pnpm isn't installed).
 3. Run `pnpm run content` (also runs inside `build`/`check`).
    - Validates every row: required fields, unique IDs, types, allowed values, ranges, references to other IDs, referenced asset files exist.
    - Errors list the **spreadsheet row number** and the problem; nothing is written if any row is invalid.
-   - On success writes `public/data/game-content.json` (commit it).
-4. Tunable numbers live in `content/balance.json` → `public/data/balance.json`.
+   - On success writes `src/data/game-content.json` (commit it). The JSON is imported and bundled with the code, so a deploy can never mix new code with stale content.
+4. Tunable numbers live in `content/balance.json` → `src/data/balance.json`.
 
-The content format is defined **once** in [`src/types/content.ts`](src/types/content.ts). To add a column: add it to the schema, add it to the CSV, run `pnpm run content`.
+The content format is defined **once** in [`src/types/content.ts`](src/types/content.ts). To add a column: add it to the schema, add it to the CSV, run `pnpm run content`. CSV cells are strings — use the `csvInt`, `csvNumber`, `csvEnum`, `csvBool`, `optionalText` helpers in that file for non-text columns.
+
+Asset filenames in content must match the file on disk **exactly, including case** (CI and GitHub Pages run on Linux).
 
 Images/audio referenced by content go in `public/assets/images/` and `public/assets/audio/`.
 
@@ -34,15 +36,15 @@ Images/audio referenced by content go in `public/assets/images/` and `public/ass
 ```
 src/
   main.ts          boot PixiJS, load content, start scene flow
-  game/            content loading
+  game/            content loading (imports src/data JSON, re-validates)
   scenes/          Scene interface, SceneManager, Start/Game/GameOver
-  systems/         gameplay systems (input, scoring, …) — add as needed
+  systems/         gameplay systems (scoring, …) — add as needed
+  data/            generated JSON (do not edit by hand)
   ui/              Button, theme (colours/fonts)
   types/           Zod schemas + TS types for content and balance
-  utils/           random helpers
+  utils/           random + keyboard helpers
 public/
   assets/          images/, audio/
-  data/            generated JSON (do not edit by hand)
 content/           game-content.csv, balance.json  ← team edits these
 scripts/           build-content.ts (CSV → validated JSON)
 docs/              spec
@@ -52,7 +54,7 @@ docs/              spec
 
 `.github/workflows/ci.yml` runs `pnpm run check` on every PR and push to `main`, then deploys `main` to **GitHub Pages**.
 
-One-time setup: in the repo's *Settings → Pages*, set **Source** to **GitHub Actions**. The game is then live at `https://sagepublications.github.io/PI-Summit-2026-Team2-Game/`.
+Pages is configured (Source: GitHub Actions). The game is live at `https://sagepublications.github.io/PI-Summit-2026-Team2-Game/`.
 
 ## Day-of checklist
 

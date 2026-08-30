@@ -6,7 +6,7 @@
  * problem with its spreadsheet row number, then exits non-zero so `pnpm run check`
  * and CI fail. Run with: pnpm run content
  */
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import Papa from 'papaparse';
 import {
@@ -20,10 +20,28 @@ import {
 const ROOT = resolve(import.meta.dirname, '..');
 const CSV_PATH = resolve(ROOT, 'content/game-content.csv');
 const BALANCE_PATH = resolve(ROOT, 'content/balance.json');
-const OUT_DIR = resolve(ROOT, 'public/data');
+// Generated JSON is imported by the game (bundled + content-hashed by Vite), so a
+// deploy can never serve new code with stale cached content or vice versa.
+const OUT_DIR = resolve(ROOT, 'src/data');
 
 const errors: string[] = [];
 const fail = (msg: string) => errors.push(msg);
+
+/**
+ * Exact-case file listing per asset dir. `existsSync` is case-insensitive on
+ * Windows/macOS but Linux (CI, GitHub Pages) is not — "Hero.png" vs "hero.png"
+ * must fail here, not 404 in production.
+ */
+const assetListings = new Map<string, Set<string>>();
+function assetExists(dir: string, file: string): boolean {
+  if (file.includes('..') || file.includes('/') || file.includes('\\')) return false;
+  let names = assetListings.get(dir);
+  if (!names) {
+    names = new Set(existsSync(resolve(ROOT, dir)) ? readdirSync(resolve(ROOT, dir)) : []);
+    assetListings.set(dir, names);
+  }
+  return names.has(file);
+}
 
 // ---------------------------------------------------------------- content CSV
 function buildContent(): ContentItem[] {
@@ -70,8 +88,8 @@ function buildContent(): ContentItem[] {
     }
     for (const { field, dir } of ASSET_FIELDS) {
       const file = raw[field];
-      if (file && !existsSync(resolve(ROOT, dir, file))) {
-        fail(`${label}: ${field} "${file}" not found in ${dir}/`);
+      if (file && !assetExists(dir, file)) {
+        fail(`${label}: ${field} "${file}" not found in ${dir}/ (filename must match exactly, including case)`);
       }
     }
 
@@ -96,7 +114,7 @@ function buildContent(): ContentItem[] {
     }
   });
 
-  if (items.length === 0 && errors.length === 0) fail('Content CSV contains no rows');
+  if (parsed.data.length === 0) fail('Content CSV contains no data rows');
   return items;
 }
 
@@ -137,4 +155,4 @@ if (errors.length > 0) {
 mkdirSync(OUT_DIR, { recursive: true });
 writeFileSync(resolve(OUT_DIR, 'game-content.json'), JSON.stringify(content, null, 2) + '\n');
 writeFileSync(resolve(OUT_DIR, 'balance.json'), JSON.stringify(balance, null, 2) + '\n');
-console.log(`✔ Content OK: ${content.length} item(s) written to public/data/`);
+console.log(`✔ Content OK: ${content.length} item(s) written to src/data/`);
