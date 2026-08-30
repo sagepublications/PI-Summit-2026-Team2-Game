@@ -1,0 +1,31 @@
+/* Styling outside the PixiJS canvas. Keep minimal: the game lives on the canvas. */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #101418;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+#app,
+#app canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Fallback error panel shown if content fails to load/validate at runtime. */
+.fatal-error {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  padding: 2rem;
+  color: #ffb4b4;
+  background: #1a0d0d;
+  white-space: pre-wrap;
+  font-family: ui-monospace, Consolas, monospace;
+}

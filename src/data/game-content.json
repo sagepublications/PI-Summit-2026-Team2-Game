@@ -1,0 +1,17 @@
+[
+  {
+    "id": "intro-1",
+    "title": "Welcome",
+    "text": "This is placeholder content item 1. Replace the schema and this CSV after the planning meeting."
+  },
+  {
+    "id": "intro-2",
+    "title": "Second item",
+    "text": "Content items are authored one per row in the shared spreadsheet, exported as CSV, then validated into JSON."
+  },
+  {
+    "id": "intro-3",
+    "title": "Third item",
+    "text": "Text with a comma, and \"quotes\" – the CSV parser handles Excel exports correctly."
+  }
+]
