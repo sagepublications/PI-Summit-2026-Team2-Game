@@ -1,0 +1,33 @@
+{
+  "name": "pi-summit-2026-team2-game",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "packageManager": "pnpm@10.19.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "pnpm run content && vite build",
+    "preview": "vite preview",
+    "content": "tsx scripts/build-content.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json",
+    "check": "pnpm run content && pnpm run typecheck && vite build"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"]
+  },
+  "dependencies": {
+    "pixi.js": "^8.20.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.4.0",
+    "@types/papaparse": "^5.5.2",
+    "papaparse": "^5.7.0",
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2",
+    "zod": "^4.5.4"
+  }
+}
