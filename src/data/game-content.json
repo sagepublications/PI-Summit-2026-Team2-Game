@@ -252,7 +252,7 @@
     "type": "end",
     "situation": "That was quick! Liz Truss sends you flowers.",
     "illustration": {
-      "file": "card-9.svg",
+      "file": "card-9.webp",
       "prompt": "A lettuce holding flowers."
     },
     "left": {
@@ -282,7 +282,7 @@
     "type": "end",
     "situation": "Just a couple more months and you would have learned everyone's name…",
     "illustration": {
-      "file": "card-10.svg",
+      "file": "card-10.webp",
       "prompt": "Hi, my name is' name sticker"
     },
     "left": {
@@ -342,7 +342,7 @@
     "type": "end",
     "situation": "Excellent performance. You've developed a bit of a strut around the office. You are so confident you try out a wink at a colleague. You regret it.",
     "illustration": {
-      "file": "card-12.svg",
+      "file": "card-12.webp",
       "prompt": "Rajeh winking"
     },
     "left": {
@@ -372,7 +372,7 @@
     "type": "end",
     "situation": "You're a product prodigy. Your linkedin is blowing up. Someone made a sculpture of you out of butter.",
     "illustration": {
-      "file": "card-13.svg",
+      "file": "card-13.webp",
       "prompt": "Butter sculpture of a human. Slightly melting."
     },
     "left": {
@@ -402,7 +402,7 @@
     "type": "end",
     "situation": "You have weathered every challenge. The product is thriving. Netflix headhunters call. You accept their offer. You now work from your yacht",
     "illustration": {
-      "file": "card-14.svg",
+      "file": "card-14.webp",
       "prompt": "Superyacht made of gold"
     },
     "left": {
@@ -432,7 +432,7 @@
     "type": "start",
     "situation": "Congratulations you have taken over leadership of a new product. Every card presents a dilemma. \nSwipe left or right to decide your product's fate. Choose wisely - every decision has a cost!",
     "illustration": {
-      "file": "card-15.svg",
+      "file": "card-15.webp",
       "prompt": "Stylised cartoon of stereotypical middle manager influenced by Lumbergh from office space saying \"Welcome aboard\""
     },
     "left": {
@@ -460,7 +460,7 @@
     "type": "start",
     "situation": "New product, new you. Ready to try again?",
     "illustration": {
-      "file": "card-16.svg",
+      "file": "card-16.webp",
       "prompt": "Stylised cartoon of stereotypical middle manager influenced by Lumbergh from office space saying \"Umm. Yeah. I'm gonna need you to manage this new product\""
     },
     "left": {
@@ -488,7 +488,7 @@
     "type": "regular",
     "situation": "You discover the team have created a secret sleep cupboard and have a rota for using it.",
     "illustration": {
-      "file": "card-17.svg",
+      "file": "card-17.webp",
       "prompt": "Cosy cupboard with a sleeping bag and pillows. A sleeping, snoring head just about visible poking out of the sleeping bag."
     },
     "left": {
@@ -515,7 +515,7 @@
     "type": "regular",
     "situation": "Your best engineer has been headhunted by a startup selling subscription air",
     "illustration": {
-      "file": "card-18.svg",
+      "file": "card-18.webp",
       "prompt": "Bottle labelled 'Musk air'"
     },
     "left": {
@@ -542,7 +542,7 @@
     "type": "regular",
     "situation": "A rumour has started that the coffee machine is haunted.",
     "illustration": {
-      "file": "card-19.svg",
+      "file": "card-19.webp",
       "prompt": "Ghost of Ali swirling around a coffee machine"
     },
     "left": {
@@ -569,7 +569,7 @@
     "type": "regular",
     "situation": "Anyone who uses the vending machine is transported back in time 5-years",
     "illustration": {
-      "file": "card-20.svg",
+      "file": "card-20.webp",
       "prompt": "Vending-time machine"
     },
     "left": {
@@ -731,7 +731,7 @@
     "type": "regular",
     "situation": "The UX team has created the perfect experience.\n\nUnfortunately, it contains 14,782 frames and opening Figma has caused three company laptops to catch fire.",
     "illustration": {
-      "file": "card-26.svg",
+      "file": "card-26.webp",
       "prompt": "Laptop engulfed in flames while an enormous Figma canvas disappears into the horizon."
     },
     "left": {
@@ -758,7 +758,7 @@
     "type": "regular",
     "situation": "A hippo escaped from Los Angeles zoo and taken up residence in the Sage data center. The police have cut the power to tempt it out.",
     "illustration": {
-      "file": "card-29.svg",
+      "file": "card-29.webp",
       "prompt": "Head of a hippo facing the camera, mouth open"
     },
     "left": {
@@ -812,7 +812,7 @@
     "type": "regular",
     "situation": "Andy has requested \"one tiny change\". The attached requirements document is 38 pages",
     "illustration": {
-      "file": "card-31.svg",
+      "file": "card-31.webp",
       "prompt": "Enormous scroll emerging from an email labelled Quick one!."
     },
     "left": {
@@ -839,7 +839,7 @@
     "type": "regular",
     "situation": "Your release depends on the Infra Team. Their Jira ticket hasn't moved since February. They have reacted to your message with ??.",
     "illustration": {
-      "file": "card-32.svg",
+      "file": "card-32.webp",
       "prompt": "Ancient dusty Jira ticket covered in cobwebs."
     },
     "left": {
@@ -866,7 +866,7 @@
     "type": "regular",
     "situation": "It's 4:47pm on Friday. Everything has passed QA. Someone whispers: \"We could just deploy it now.\"",
     "illustration": {
-      "file": "card-33.svg",
+      "file": "card-33.webp",
       "prompt": "Giant red DEPLOY button. Clock: 16:47."
     },
     "left": {
@@ -947,7 +947,7 @@
     "type": "regular",
     "situation": "This month's Azure bill is roughly equivalent to the GDP of a small island. Engineering says: \"Yeah… we've been meaning to look at that.\"",
     "illustration": {
-      "file": "card-36.svg",
+      "file": "card-36.webp",
       "prompt": "A terrified Vicki looking at a gigantic calculator displaying £££££££."
     },
     "left": {
@@ -1244,7 +1244,7 @@
     "type": "regular",
     "situation": "Finance has discovered the coffee machine costs more per month than the database.",
     "illustration": {
-      "file": "card-59.svg",
+      "file": "card-59.webp",
       "prompt": "A coffee cup wearing a small gold crown"
     },
     "left": {
@@ -1271,7 +1271,7 @@
     "type": "regular",
     "situation": "A competitor has launched an identical product with a nicer font.",
     "illustration": {
-      "file": "card-60.svg",
+      "file": "card-60.webp",
       "prompt": "Two identical boxes, one wearing a bow tie"
     },
     "left": {

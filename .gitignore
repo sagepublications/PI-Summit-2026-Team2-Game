@@ -7,3 +7,6 @@ Thumbs.db
 .idea/
 .claude/settings.local.json
 .playwright-mcp/
+
+# Source artwork (large PNGs); the game ships the WebP versions in public/assets/images
+docs/cards/
