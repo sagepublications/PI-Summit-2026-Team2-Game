@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { applyChoice, createRun, findFailure, pickEndBand, toRoman } from '../src/systems/run.ts';
+import { applyChoice, createRun, findFailure, pickEndBand } from '../src/systems/run.ts';
 import { ZERO_EFFECTS, type Balance, type Card, type Effects } from '../src/types/content.ts';
 import rawBalance from '../content/balance.json' with { type: 'json' };
 
@@ -108,14 +108,4 @@ test('seeded runs are reproducible', async () => {
   const order = (seed: number) => createRun(cards, balance, mulberry32(seed)).deck.map((c) => c.id);
   assert.deepEqual(order(42), order(42));
   assert.notDeepEqual(order(42), order(43));
-});
-
-test('roman numerals for the clock', () => {
-  assert.equal(toRoman(0), '0');
-  assert.equal(toRoman(1), 'I');
-  assert.equal(toRoman(4), 'IV');
-  assert.equal(toRoman(7), 'VII');
-  assert.equal(toRoman(11), 'XI');
-  assert.equal(toRoman(31), 'XXXI');
-  assert.equal(toRoman(49), 'XLIX');
 });

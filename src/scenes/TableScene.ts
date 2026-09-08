@@ -2,7 +2,7 @@ import { Container, Graphics, Text, type Texture } from 'pixi.js';
 import type { Scene } from './Scene';
 import type { GameData } from '../game/content';
 import type { Card, Metric } from '../types/content';
-import { applyChoice, createRun, pickEndBand, toRoman, type Run, type Side } from '../systems/run';
+import { applyChoice, createRun, pickEndBand, type Run, type Side } from '../systems/run';
 import { CardView } from '../ui/CardView';
 import { Hud } from '../ui/Hud';
 import { DESIGN, theme } from '../ui/theme';
@@ -126,7 +126,9 @@ export class TableScene implements Scene {
 
   private headerFor(phase: Phase, months: number): { text: string; danger: boolean } {
     const ui = this.data.balance.uiStrings;
-    const clock = `${ui.month} ${toRoman(months)}`;
+    // Arabic numerals: the mock-up used roman ones, but "MONTH XVIII" is slow to
+    // read at a glance and the spec asks the clock to display how many months.
+    const clock = `${ui.month} ${months}`;
     switch (phase) {
       case 'intro':
         return { text: `${clock} · ${ui.intro.header}`, danger: false };

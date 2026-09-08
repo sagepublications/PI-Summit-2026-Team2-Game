@@ -81,16 +81,3 @@ export function pickEndBand(endCards: readonly Card[], months: number): Card[] {
   }
   return endCards.filter((c) => c.end && 'minMonths' in c.end && c.end.minMonths === best);
 }
-
-/** Roman numerals for the HUD clock ("MONTH VII"); 0 stays "0". */
-export function toRoman(n: number): string {
-  if (n <= 0) return '0';
-  const table: [number, string][] = [
-    [1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'], [100, 'C'], [90, 'XC'],
-    [50, 'L'], [40, 'XL'], [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I'],
-  ];
-  let out = '';
-  let rest = n;
-  for (const [v, s] of table) while (rest >= v) { out += s; rest -= v; }
-  return out;
-}
