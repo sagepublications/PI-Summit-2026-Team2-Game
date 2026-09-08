@@ -73,4 +73,4 @@ docs/              spec, original content export
 
 ## CI / deployment
 
-`.github/workflows/ci.yml` runs `pnpm run check` on every PR and push to `main`, then deploys `main` to **GitHub Pages**. The workflow derives the correct base path automatically.
+`.github/workflows/ci.yml` runs `pnpm run check` on every PR and push to `main`, then deploys `main` to **GitHub Pages** at https://sagepublications.github.io/PI-Summit-2026-Team2-Game/. The bundle is built with a relative base (`./`), so it works at any path without configuration.
