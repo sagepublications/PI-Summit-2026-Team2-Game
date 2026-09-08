@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="480" viewBox="0 0 200 200">
+  <!-- Ancient dusty ticket covered in cobwebs -->
+  <rect x="45" y="55" width="110" height="90" rx="6" fill="#d8c3a0" stroke="#8a6a45" stroke-width="3"/>
+  <rect x="45" y="55" width="110" height="18" rx="6" fill="#4a6d8c"/>
+  <text x="100" y="68" font-family="Georgia, serif" font-size="9" fill="#f3ead8" text-anchor="middle" letter-spacing="1">INFRA-1 · TO DO</text>
+  <g stroke="#8a6a45" stroke-width="2">
+    <path d="M58 90 h84 M58 102 h60 M58 114 h84 M58 126 h40"/>
+  </g>
+  <g stroke="#e6e6ef" stroke-width="1.2" fill="none" opacity="0.9">
+    <path d="M45 55 L80 90 M45 55 L60 100 M45 55 L100 70"/>
+    <path d="M52 62 Q60 75 56 92 M60 68 Q74 78 68 96 M68 74 Q84 80 82 90"/>
+    <path d="M155 145 L120 110 M155 145 L140 100 M155 145 L100 130"/>
+    <path d="M148 138 Q140 125 144 108 M140 132 Q126 122 132 104 M132 126 Q116 120 118 110"/>
+  </g>
+  <circle cx="64" cy="82" r="3" fill="#181818"/>
+  <path d="M60 80 l-6 -4 M60 84 l-6 4 M68 80 l6 -4 M68 84 l6 4" stroke="#181818" stroke-width="1.5"/>
+  <text x="170" y="160" font-family="Georgia, serif" font-size="16" fill="#c9963c" text-anchor="middle">??</text>
+</svg>

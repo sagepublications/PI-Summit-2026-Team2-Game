@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="480" viewBox="0 0 200 200">
+  <!-- Calendar page saying TOMORROW, two panicking heads -->
+  <rect x="55" y="25" width="90" height="85" rx="6" fill="#f3ead8" stroke="#c9963c" stroke-width="4"/>
+  <rect x="55" y="25" width="90" height="22" rx="6" fill="#d64a3c"/>
+  <circle cx="75" cy="25" r="4" fill="#8a6a45"/><circle cx="125" cy="25" r="4" fill="#8a6a45"/>
+  <text x="100" y="80" font-family="Georgia, serif" font-size="15" font-weight="bold" fill="#181818" text-anchor="middle" letter-spacing="1">TOMORROW</text>
+  <text x="100" y="100" font-family="Georgia, serif" font-size="10" fill="#d64a3c" text-anchor="middle">!!!</text>
+  <circle cx="60" cy="150" r="24" fill="#e8c9a0"/>
+  <circle cx="140" cy="150" r="24" fill="#c9a882"/>
+  <g fill="#181818">
+    <circle cx="52" cy="145" r="3.5"/><circle cx="68" cy="145" r="3.5"/>
+    <circle cx="132" cy="145" r="3.5"/><circle cx="148" cy="145" r="3.5"/>
+  </g>
+  <ellipse cx="60" cy="162" rx="7" ry="9" fill="#181818"/>
+  <ellipse cx="140" cy="162" rx="7" ry="9" fill="#181818"/>
+  <path d="M40 128 l-8 -10 M80 128 l8 -10 M120 128 l-8 -10 M160 128 l8 -10" stroke="#e8c9a0" stroke-width="4" stroke-linecap="round"/>
+</svg>

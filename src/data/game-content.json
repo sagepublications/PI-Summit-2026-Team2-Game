@@ -489,7 +489,7 @@
     "situation": "You discover the team have created a secret sleep cupboard and have a rota for using it.",
     "illustration": {
       "file": "card-17.svg",
-      "prompt": "Sleep cupboard"
+      "prompt": "Cosy cupboard with a sleeping bag and pillows. A sleeping, snoring head just about visible poking out of the sleeping bag."
     },
     "left": {
       "text": "Take over the sleep cupboard. You deserve it more.",
@@ -538,6 +538,60 @@
     }
   },
   {
+    "id": "24",
+    "type": "regular",
+    "situation": "Engineering opens a part of the codebase last touched in 2014. The comments simply say:\n\n\"DO NOT CHANGE THIS.\"",
+    "illustration": {
+      "file": "card-24.svg",
+      "prompt": "Ancient computer covered in hazard tape."
+    },
+    "left": {
+      "text": "Rewrite it.",
+      "effects": {
+        "team": 0,
+        "quality": 20,
+        "deadline": -20,
+        "budget": -10
+      }
+    },
+    "right": {
+      "text": "Close the file slowly.",
+      "effects": {
+        "team": 0,
+        "quality": -10,
+        "deadline": 10,
+        "budget": 0
+      }
+    }
+  },
+  {
+    "id": "26",
+    "type": "regular",
+    "situation": "The UX team has created the perfect experience.\n\nUnfortunately, it contains 14,782 frames and opening Figma has caused three company laptops to catch fire.",
+    "illustration": {
+      "file": "card-26.svg",
+      "prompt": "Laptop engulfed in flames while an enormous Figma canvas disappears into the horizon."
+    },
+    "left": {
+      "text": "Engineering can build it.",
+      "effects": {
+        "team": -10,
+        "quality": 20,
+        "deadline": -20,
+        "budget": 0
+      }
+    },
+    "right": {
+      "text": "Delete every second frame",
+      "effects": {
+        "team": 0,
+        "quality": -20,
+        "deadline": 20,
+        "budget": 0
+      }
+    }
+  },
+  {
     "id": "29",
     "type": "regular",
     "situation": "A hippo escaped from Los Angeles zoo and taken up residence in the Sage data center. The police have cut the power to tempt it out.",
@@ -565,6 +619,141 @@
     }
   },
   {
+    "id": "30",
+    "type": "regular",
+    "situation": "An executive has promised a live demo for Sara Miller McCune  tomorrow. This is the first anyone on the product team has heard about it.",
+    "illustration": {
+      "file": "card-30.svg",
+      "prompt": "Calendar saying TOMORROW with panicking hysterical PM & Dev"
+    },
+    "left": {
+      "text": "It's called a prototype now.",
+      "effects": {
+        "team": 0,
+        "quality": -20,
+        "deadline": 20,
+        "budget": 0
+      }
+    },
+    "right": {
+      "text": "Explain the concept of calendars.",
+      "effects": {
+        "team": 10,
+        "quality": 0,
+        "deadline": -10,
+        "budget": 0
+      }
+    }
+  },
+  {
+    "id": "31",
+    "type": "regular",
+    "situation": "Andy has requested \"one tiny change\". The attached requirements document is 38 pages",
+    "illustration": {
+      "file": "card-31.svg",
+      "prompt": "Enormous scroll emerging from an email labelled Quick one!."
+    },
+    "left": {
+      "text": "Of course. Tiny",
+      "effects": {
+        "team": -10,
+        "quality": 0,
+        "deadline": -20,
+        "budget": 0
+      }
+    },
+    "right": {
+      "text": "Add it to the backlog.",
+      "effects": {
+        "team": 0,
+        "quality": 10,
+        "deadline": 10,
+        "budget": 0
+      }
+    }
+  },
+  {
+    "id": "32",
+    "type": "regular",
+    "situation": "Your release depends on the Infra Team. Their Jira ticket hasn't moved since February. They have reacted to your message with ??.",
+    "illustration": {
+      "file": "card-32.svg",
+      "prompt": "Ancient dusty Jira ticket covered in cobwebs."
+    },
+    "left": {
+      "text": "Wait patiently.",
+      "effects": {
+        "team": 10,
+        "quality": 0,
+        "deadline": -20,
+        "budget": 0
+      }
+    },
+    "right": {
+      "text": "Escalate until someone cries.",
+      "effects": {
+        "team": -10,
+        "quality": 0,
+        "deadline": 20,
+        "budget": 0
+      }
+    }
+  },
+  {
+    "id": "33",
+    "type": "regular",
+    "situation": "It's 4:47pm on Friday. Everything has passed QA. Someone whispers: \"We could just deploy it now.\"",
+    "illustration": {
+      "file": "card-33.svg",
+      "prompt": "Giant red DEPLOY button. Clock: 16:47."
+    },
+    "left": {
+      "text": "What's the worst that could happen?",
+      "effects": {
+        "team": 0,
+        "quality": -20,
+        "deadline": 20,
+        "budget": 0
+      }
+    },
+    "right": {
+      "text": "MONDAY.",
+      "effects": {
+        "team": 0,
+        "quality": 20,
+        "deadline": -10,
+        "budget": 0
+      }
+    }
+  },
+  {
+    "id": "34",
+    "type": "regular",
+    "situation": "Martha asks how long the new feature will take. Engineering says: “Somewhere between two weeks and the heat death of the universe.",
+    "illustration": {
+      "file": "card-34.svg",
+      "prompt": "A developer (Josh) staring thoughtfully at a calendar that stretches into outer space."
+    },
+    "left": {
+      "text": "Put two weeks in the roadmap.",
+      "effects": {
+        "team": -20,
+        "quality": 0,
+        "deadline": 20,
+        "budget": 0
+      }
+    },
+    "right": {
+      "text": "I'll put ‘Q4-ish’",
+      "effects": {
+        "team": 10,
+        "quality": 0,
+        "deadline": -10,
+        "budget": 0
+      }
+    }
+  },
+  {
     "id": "35",
     "type": "regular",
     "situation": "The CEO's spiritual guru tells them that green is unlucky. A green purge is declared.",
@@ -588,6 +777,33 @@
         "quality": -10,
         "deadline": -10,
         "budget": 0
+      }
+    }
+  },
+  {
+    "id": "36",
+    "type": "regular",
+    "situation": "This month's Azure bill is roughly equivalent to the GDP of a small island. Engineering says: \"Yeah… we've been meaning to look at that.\"",
+    "illustration": {
+      "file": "card-36.svg",
+      "prompt": "A terrified PM looking at a gigantic calculator displaying £££££££."
+    },
+    "left": {
+      "text": "Optimise everything immediatelyt.",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": -20,
+        "budget": 20
+      }
+    },
+    "right": {
+      "text": "It's probably fine.",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 10,
+        "budget": -20
       }
     }
   },

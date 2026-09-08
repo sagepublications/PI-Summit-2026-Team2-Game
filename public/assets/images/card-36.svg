@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="480" viewBox="0 0 200 200">
+  <!-- Terrified head beside a gigantic calculator showing pound signs -->
+  <rect x="95" y="25" width="85" height="150" rx="10" fill="#4a4f7a" stroke="#c9963c" stroke-width="4"/>
+  <rect x="105" y="38" width="65" height="30" rx="4" fill="#cfe3c0"/>
+  <text x="138" y="60" font-family="ui-monospace, Consolas, monospace" font-size="14" fill="#181818" text-anchor="middle">£££££££</text>
+  <g fill="#e6e6ef">
+    <rect x="105" y="80" width="17" height="14" rx="3"/><rect x="129" y="80" width="17" height="14" rx="3"/><rect x="153" y="80" width="17" height="14" rx="3"/>
+    <rect x="105" y="102" width="17" height="14" rx="3"/><rect x="129" y="102" width="17" height="14" rx="3"/><rect x="153" y="102" width="17" height="14" rx="3"/>
+    <rect x="105" y="124" width="17" height="14" rx="3"/><rect x="129" y="124" width="17" height="14" rx="3"/>
+  </g>
+  <rect x="153" y="124" width="17" height="36" rx="3" fill="#d64a3c"/>
+  <rect x="105" y="146" width="41" height="14" rx="3" fill="#e6e6ef"/>
+  <circle cx="52" cy="135" r="34" fill="#e8c9a0"/>
+  <path d="M20 124 q32 -44 64 -6 q-6 -20 -32 -20 q-28 0 -32 26z" fill="#5a3a22"/>
+  <circle cx="40" cy="134" r="6" fill="#fff"/><circle cx="64" cy="134" r="6" fill="#fff"/>
+  <circle cx="41" cy="135" r="3" fill="#181818"/><circle cx="63" cy="135" r="3" fill="#181818"/>
+  <ellipse cx="52" cy="156" rx="7" ry="9" fill="#181818"/>
+  <path d="M24 108 l-4 -8 M80 108 l4 -8 M52 96 v-8" stroke="#e8c9a0" stroke-width="3" stroke-linecap="round"/>
+</svg>
