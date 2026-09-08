@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="480" viewBox="0 0 200 200">
+  <!-- Ghost in chains wearing a Santa hat -->
+  <path d="M55 170 v-80 q0 -45 45 -45 q45 0 45 45 v80 l-15 -12 -15 12 -15 -12 -15 12 -15 -12z" fill="#e6e6ef" stroke="#c9963c" stroke-width="3"/>
+  <ellipse cx="85" cy="95" rx="6" ry="9" fill="#181818"/>
+  <ellipse cx="115" cy="95" rx="6" ry="9" fill="#181818"/>
+  <ellipse cx="100" cy="120" rx="8" ry="10" fill="#181818"/>
+  <path d="M60 58 q40 -45 80 -10 l-12 8 q-30 -30 -62 6z" fill="#d64a3c"/>
+  <circle cx="142" cy="46" r="8" fill="#fff"/>
+  <path d="M58 60 q42 -8 84 0" stroke="#fff" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <g fill="none" stroke="#8a8a8a" stroke-width="4">
+    <ellipse cx="40" cy="120" rx="6" ry="9"/><ellipse cx="42" cy="138" rx="6" ry="9"/><ellipse cx="46" cy="156" rx="6" ry="9"/>
+    <ellipse cx="160" cy="125" rx="6" ry="9"/><ellipse cx="158" cy="143" rx="6" ry="9"/>
+  </g>
+</svg>

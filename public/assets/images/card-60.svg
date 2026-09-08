@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="480" viewBox="0 0 200 200">
+  <!-- Two identical boxes, one wearing a bow tie -->
+  <rect x="25" y="80" width="65" height="65" fill="#5a3a22" stroke="#c9963c" stroke-width="3"/>
+  <rect x="110" y="80" width="65" height="65" fill="#5a3a22" stroke="#c9963c" stroke-width="3"/>
+  <path d="M25 80 l10 -14 h65 l-10 14z" fill="#8a6a45"/>
+  <path d="M110 80 l10 -14 h65 l-10 14z" fill="#8a6a45"/>
+  <path d="M128 78 l14 6 l14 -6 v14 l-14 -6 l-14 6z" fill="#d64a3c"/>
+  <circle cx="142" cy="85" r="3" fill="#c9963c"/>
+</svg>

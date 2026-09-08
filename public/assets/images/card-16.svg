@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="480" viewBox="0 0 200 200">
+  <!-- Middle-manager head, glasses, mug: "Yeah... I'm gonna need you to..." -->
+  <path d="M50 185 v-35 q0 -30 50 -30 q50 0 50 30 v35 z" fill="#f3ead8"/>
+  <path d="M95 120 l5 40 l5 -40z" fill="#c9963c"/>
+  <circle cx="100" cy="82" r="36" fill="#e8c9a0"/>
+  <path d="M64 78 q10 -36 72 -6 q-10 -12 -36 -12 q-30 0 -36 18z" fill="#8a6a45"/>
+  <rect x="76" y="78" width="20" height="14" rx="4" fill="none" stroke="#181818" stroke-width="2.5"/>
+  <rect x="104" y="78" width="20" height="14" rx="4" fill="none" stroke="#181818" stroke-width="2.5"/>
+  <path d="M96 84 h8" stroke="#181818" stroke-width="2.5"/>
+  <path d="M80 86 h12 M108 86 h12" stroke="#181818" stroke-width="2.5"/>
+  <path d="M92 106 h16" stroke="#181818" stroke-width="2.5"/>
+  <rect x="140" y="140" width="26" height="30" rx="4" fill="#4a6d8c"/>
+  <path d="M166 148 q12 0 12 8 q0 8 -12 8" stroke="#4a6d8c" stroke-width="4" fill="none"/>
+  <text x="40" y="45" font-family="Georgia, serif" font-size="16" fill="#f3ead8" font-style="italic">Yeah…</text>
+</svg>

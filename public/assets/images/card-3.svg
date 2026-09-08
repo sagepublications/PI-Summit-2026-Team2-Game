@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="480" viewBox="0 0 200 200">
+  <!-- Video-call window: HR is calling -->
+  <rect x="30" y="45" width="140" height="110" rx="8" fill="#2b2f4a" stroke="#c9963c" stroke-width="4"/>
+  <rect x="30" y="45" width="140" height="18" rx="8" fill="#4a4f7a"/>
+  <circle cx="100" cy="100" r="22" fill="#e8c9a0"/>
+  <circle cx="93" cy="96" r="2.5" fill="#181818"/>
+  <circle cx="107" cy="96" r="2.5" fill="#181818"/>
+  <path d="M92 110 h16" stroke="#181818" stroke-width="2.5"/>
+  <text x="100" y="147" font-family="Georgia, serif" font-size="14" fill="#f3ead8" text-anchor="middle" letter-spacing="2">HR CALLING</text>
+  <circle cx="150" cy="54" r="5" fill="#d64a3c"/>
+</svg>

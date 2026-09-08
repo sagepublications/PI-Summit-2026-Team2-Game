@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="480" viewBox="0 0 200 200">
+  <!-- A giant cookie in a pop-up dialog -->
+  <rect x="25" y="40" width="150" height="120" rx="8" fill="#f3ead8" stroke="#c9963c" stroke-width="4"/>
+  <rect x="25" y="40" width="150" height="18" rx="8" fill="#181818"/>
+  <path d="M158 45 l8 8 M166 45 l-8 8" stroke="#f3ead8" stroke-width="2.5"/>
+  <circle cx="100" cy="110" r="38" fill="#c98a4a" stroke="#8a5a2a" stroke-width="3"/>
+  <g fill="#4b1d15">
+    <circle cx="86" cy="98" r="5"/><circle cx="112" cy="94" r="4"/><circle cx="118" cy="118" r="5"/><circle cx="96" cy="124" r="4"/><circle cx="82" cy="118" r="3"/>
+  </g>
+</svg>
