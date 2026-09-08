@@ -53,13 +53,15 @@ export const theme = {
   },
   layout: {
     margin: 60,
-    hud: { top: 90, iconSize: 56, barWidth: 196, barHeight: 12, dotRadiusPerTen: 7 },
-    title: { y: 280 },
-    header: { y: 372 },
-    card: { x: 80, y: 430, width: 920, height: 1420, radius: 44 },
-    textBox: { inset: 50, top: 50, minHeight: 250, padding: 40, tiltDeg: -1.5 },
-    /** Portrait picture panel (2:3 art fills it); `top` is measured from the card's top edge. */
-    illustration: { top: 370, width: 560, height: 780, radius: 28, padding: 14 },
-    choice: { width: 370, height: 170, bottom: 60, tiltDeg: 3 },
+    hud: { top: 76, iconSize: 56, barWidth: 196, barHeight: 12, dotRadiusPerTen: 7 },
+    header: { y: 266 },
+    card: { x: 80, y: 322, width: 920, height: 1538, radius: 44 },
+    textBox: { inset: 50, top: 40, minHeight: 220, maxHeight: 340, padding: 34, tiltDeg: -1.5 },
+    /**
+     * Portrait picture panel. Its size is worked out per card: it takes all the
+     * height between the text box and the choice tags (minus `gap`), at 2:3.
+     */
+    illustration: { gap: 26, radius: 28, padding: 12 },
+    choice: { width: 370, height: 150, bottom: 44, tiltDeg: 3 },
   },
 } as const;

@@ -9,7 +9,6 @@ import type { Tweener } from '../utils/tween';
 export class Hud extends Container {
   private readonly bars: Record<Metric, MetricBar>;
   private readonly headerText: Text;
-  private readonly titleText: Text;
   private readonly rules = new Graphics();
 
   constructor(balance: Balance, icons: Partial<Record<Metric, Texture>>, tweener: Tweener) {
@@ -32,27 +31,20 @@ export class Hud extends Container {
     });
     this.headerText.anchor.set(0.5);
     this.headerText.position.set(DESIGN.width / 2, theme.layout.header.y);
-
-    this.titleText = new Text({
-      text: balance.uiStrings.title,
-      style: { fontFamily: theme.font.family, fontSize: theme.font.title, fill: theme.colors.hudLabel, fontWeight: '800', letterSpacing: 1 },
-    });
-    this.titleText.anchor.set(0.5);
-    this.titleText.position.set(DESIGN.width / 2, theme.layout.title.y);
-    this.titleText.visible = false;
-
-    this.addChild(this.rules, this.headerText, this.titleText);
+    this.addChild(this.rules, this.headerText);
   }
 
-  /** The game title is shown on the intro and start screens only. */
-  showTitle(visible: boolean): void {
-    this.titleText.visible = visible;
-  }
-
-  setHeader(text: string, danger = false): void {
+  /**
+   * The line between the bars and the card: the month clock during play, or the
+   * game title (bigger, heavier, white) on the intro and start screens.
+   */
+  setHeader(text: string, opts: { danger?: boolean; title?: boolean } = {}): void {
+    const { danger = false, title = false } = opts;
     this.headerText.text = text;
-    const color = danger ? theme.colors.danger : theme.colors.accent;
-    this.headerText.style.fill = color;
+    this.headerText.style.fontSize = title ? theme.font.title : theme.font.header;
+    this.headerText.style.fontWeight = title ? '800' : 'bold';
+    this.headerText.style.letterSpacing = title ? 1 : 6;
+    this.headerText.style.fill = danger ? theme.colors.danger : title ? theme.colors.hudLabel : theme.colors.accent;
     const y = theme.layout.header.y;
     const gap = this.headerText.width / 2 + 28;
     const { margin } = theme.layout;

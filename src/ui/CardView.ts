@@ -77,7 +77,7 @@ export class CardView extends Container {
       },
     });
     // Auto-shrink long text so it never spills out of the box.
-    const maxTextHeight = illustration.top - textBox.top - textBox.padding * 2 - 20;
+    const maxTextHeight = textBox.maxHeight - textBox.padding * 2;
     while (situation.height > maxTextHeight && situation.style.fontSize > theme.font.situationMin) {
       situation.style.fontSize -= 2;
       situation.style.lineHeight = situation.style.fontSize * 1.25;
@@ -91,9 +91,14 @@ export class CardView extends Container {
     box.rotation = (textBox.tiltDeg * Math.PI) / 180;
     this.addChild(box);
 
-    // ---- illustration in a gold-framed portrait panel
-    const panelY = top + illustration.top + illustration.height / 2;
-    const { width: pw, height: ph, radius: pr, padding: pp } = illustration;
+    // ---- illustration in a framed portrait panel, as large as the card allows:
+    // everything between the text box and the choice tags, at 2:3.
+    const boxBottom = top + textBox.top + boxHeight;
+    const tagTop = -top - choice.bottom - choice.height;
+    const { gap, radius: pr, padding: pp } = illustration;
+    const ph = tagTop - boxBottom - gap * 2;
+    const pw = Math.min(card.width - textBox.inset * 2, Math.round((ph * 2) / 3));
+    const panelY = boxBottom + gap + ph / 2;
     const panel = new Graphics()
       .roundRect(-pw / 2, panelY - ph / 2, pw, ph, pr)
       .fill(theme.colors.panel)
@@ -287,12 +292,14 @@ export class CardView extends Container {
    */
   commit(side: Side): void {
     if (!this.enabled) return;
+    // Clear the preview *before* handing over: the scene resets the HUD when it
+    // accepts the choice, and a preview fired after that would linger.
+    this.opts.onPreview(null);
     if (!this.opts.onChoose(side)) return;
     this.setInteractive(false);
     this.pointerId = null;
     this.dragging = false;
     this.highlight(side);
-    this.opts.onPreview(side);
   }
 
   /** The one position/rotation tween allowed at a time (snap-back vs fly-off never overlap). */

@@ -124,25 +124,22 @@ export class TableScene implements Scene {
     e.preventDefault();
   };
 
-  private headerFor(phase: Phase, months: number): { text: string; danger: boolean } {
+  private headerFor(phase: Phase, months: number): { text: string; danger?: boolean; title?: boolean } {
     const ui = this.data.balance.uiStrings;
     // Arabic numerals: the mock-up used roman ones, but "MONTH XVIII" is slow to
     // read at a glance and the spec asks the clock to display how many months.
     const clock = `${ui.month} ${months}`;
     switch (phase) {
       case 'intro':
-        return { text: `${clock} · ${ui.intro.header}`, danger: false };
       case 'start':
-        return { text: `${clock} · ${ui.start.header}`, danger: false };
+        // The game title takes the header line on the start screens (month 0 says nothing).
+        return { text: ui.title, title: true };
       case 'playing':
-        return { text: clock, danger: false };
+        return { text: clock };
       case 'gameover':
         return { text: `${clock} · ${ui.gameover.header}`, danger: true };
       case 'end':
-        return {
-          text: `${months} ${months === 1 ? ui.month : ui.months}${this.endedByExhaustion ? ` · ${ui.end.header}` : ''}`,
-          danger: false,
-        };
+        return { text: `${months} ${months === 1 ? ui.month : ui.months}${this.endedByExhaustion ? ` · ${ui.end.header}` : ''}` };
     }
   }
 
@@ -152,8 +149,7 @@ export class TableScene implements Scene {
     this.phase = phase;
     const months = this.run?.months ?? this.lastMonths;
     const header = this.headerFor(phase, months);
-    this.hud.setHeader(header.text, header.danger);
-    this.hud.showTitle(phase === 'intro' || phase === 'start');
+    this.hud.setHeader(header.text, header);
 
     const ui = this.data.balance.uiStrings;
     const fallback = phase === 'playing' ? null : ui[phase];
