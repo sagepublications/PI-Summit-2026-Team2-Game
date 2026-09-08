@@ -4,6 +4,7 @@ import { SceneManager } from './scenes/SceneManager';
 import { TableScene, type TableSceneAssets } from './scenes/TableScene';
 import { METRICS, type Metric } from './types/content';
 import { theme } from './ui/theme';
+import { Music } from './utils/music';
 import { rngFromQuery } from './utils/rng';
 import { Sfx } from './utils/sfx';
 
@@ -81,25 +82,49 @@ async function main(): Promise<void> {
   const { rng, seed } = rngFromQuery(window.location.search);
   if (seed !== null) console.info(`Seeded run: ${seed}`);
 
-  const sfx = new Sfx(data.balance.audio.volume);
-  const muteButton = document.getElementById('mute');
-  if (muteButton) {
-    const { soundOn, soundOff } = data.balance.uiStrings;
-    const render = () => {
-      muteButton.textContent = sfx.muted ? '🔇' : '🔊';
-      muteButton.setAttribute('aria-label', sfx.muted ? soundOff : soundOn);
-      muteButton.title = sfx.muted ? soundOff : soundOn;
-    };
-    muteButton.addEventListener('click', () => {
-      sfx.muted = !sfx.muted;
-      render();
-    });
-    render();
-    muteButton.hidden = data.balance.audio.volume <= 0;
-  }
+  const { audio, uiStrings } = data.balance;
+  const sfx = new Sfx(audio.sfxVolume);
+  const music = new Music(`${import.meta.env.BASE_URL}assets/audio/${audio.music}`, audio.musicVolume);
+  setupVolumeControls(sfx, music, uiStrings.sfxLabel, uiStrings.musicLabel);
+  // Browsers only allow audio after a user gesture: the first swipe/key starts the music.
+  const startMusic = () => {
+    music.start();
+    window.removeEventListener('pointerdown', startMusic);
+    window.removeEventListener('keydown', startMusic);
+  };
+  window.addEventListener('pointerdown', startMusic);
+  window.addEventListener('keydown', startMusic);
 
   const scenes = new SceneManager(app);
   scenes.goTo(new TableScene(data, assets, rng, sfx));
+}
+
+/** Two range sliders (effects, music); sliding to 0 mutes and greys the row. */
+function setupVolumeControls(sfx: Sfx, music: Music, sfxLabel: string, musicLabel: string): void {
+  const panel = document.getElementById('audio-controls');
+  const sfxInput = document.getElementById('sfx-volume') as HTMLInputElement | null;
+  const musicInput = document.getElementById('music-volume') as HTMLInputElement | null;
+  if (!panel || !sfxInput || !musicInput) return;
+
+  const wire = (input: HTMLInputElement, label: string, initial: number, apply: (v: number) => void) => {
+    const row = input.closest('.volume') as HTMLElement;
+    row.querySelector('.volume-name')!.textContent = label;
+    input.setAttribute('aria-label', label);
+    const render = (v: number) => {
+      row.classList.toggle('is-muted', v === 0);
+      input.title = v === 0 ? `${label}: muted` : `${label}: ${Math.round(v * 100)}%`;
+    };
+    input.value = String(Math.round(initial * 100));
+    render(initial);
+    input.addEventListener('input', () => {
+      const v = Number(input.value) / 100;
+      apply(v);
+      render(v);
+    });
+  };
+  wire(sfxInput, sfxLabel, sfx.getVolume(), (v) => sfx.setVolume(v));
+  wire(musicInput, musicLabel, music.volume, (v) => music.setVolume(v));
+  panel.hidden = false;
 }
 
 main().catch((err: unknown) => showFatalError(err instanceof Error ? err.message : String(err)));

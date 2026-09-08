@@ -98,8 +98,12 @@ export const BalanceSchema = z.object({
   anim: z.object({ flyOffMs: ms, snapBackMs: ms, dealInMs: ms, barTweenMs: ms }),
   /** A metric within this distance of a bound is drawn in the danger colour. */
   dangerWithin: z.number().int().min(0).max(100),
-  /** Sound effects (synthesised, no files). volume 0 disables them. */
-  audio: z.object({ volume: z.number().min(0).max(1) }),
+  /** Starting volumes (0–1; players adjust with the sliders) and the music file in public/assets/audio/. */
+  audio: z.object({
+    sfxVolume: z.number().min(0).max(1),
+    musicVolume: z.number().min(0).max(1),
+    music: z.string().regex(/^[^/\\]+\.(mp3|ogg|m4a|wav)$/i, 'music must be a filename (mp3/ogg/m4a/wav) in public/assets/audio/'),
+  }),
   uiStrings: z.object({
     /** Game title, shown on the intro and start screens. */
     title: label,
@@ -112,8 +116,8 @@ export const BalanceSchema = z.object({
     months: label,
     loading: label,
     rotateDevice: label,
-    soundOn: label,
-    soundOff: label,
+    sfxLabel: label,
+    musicLabel: label,
   }),
 });
 export type Balance = z.infer<typeof BalanceSchema>;

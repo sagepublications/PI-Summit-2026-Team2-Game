@@ -6,12 +6,24 @@
 export class Sfx {
   private ctx: AudioContext | null = null;
   private master: GainNode | null = null;
-  muted = false;
+  private volume: number;
 
-  constructor(private readonly volume: number) {}
+  constructor(volume: number) {
+    this.volume = Math.max(0, Math.min(1, volume));
+  }
+
+  /** 0 mutes. Applies immediately to anything still ringing. */
+  setVolume(v: number): void {
+    this.volume = Math.max(0, Math.min(1, v));
+    if (this.master) this.master.gain.value = this.volume;
+  }
+
+  getVolume(): number {
+    return this.volume;
+  }
 
   private get audio(): { ctx: AudioContext; out: GainNode } | null {
-    if (this.muted || this.volume <= 0) return null;
+    if (this.volume <= 0) return null;
     if (typeof AudioContext === 'undefined') return null;
     if (!this.ctx) {
       this.ctx = new AudioContext();

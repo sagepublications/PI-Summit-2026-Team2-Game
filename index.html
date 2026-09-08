@@ -11,7 +11,10 @@
   <body>
     <div id="loading">…</div>
     <div id="app"></div>
-    <button id="mute" type="button" hidden>🔊</button>
+    <div id="audio-controls" hidden>
+      <label class="volume"><span class="volume-icon" aria-hidden="true">🔔</span><span class="volume-name" data-label="sfx"></span><input id="sfx-volume" type="range" min="0" max="100" step="1" /></label>
+      <label class="volume"><span class="volume-icon" aria-hidden="true">🎵</span><span class="volume-name" data-label="music"></span><input id="music-volume" type="range" min="0" max="100" step="1" /></label>
+    </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

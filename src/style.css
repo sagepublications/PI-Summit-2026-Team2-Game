@@ -67,26 +67,58 @@ body {
   letter-spacing: 0.1em;
 }
 
-/* Sound toggle — the one control that lives outside the canvas. */
-#mute {
+/* Volume controls — the only UI outside the canvas. Slide to 0 to mute (goes grey). */
+#audio-controls {
   position: fixed;
-  top: max(12px, env(safe-area-inset-top));
-  right: max(12px, env(safe-area-inset-right));
-  width: 44px;
-  height: 44px;
-  border: 2px solid #348af7;
-  border-radius: 50%;
-  background: #001a69;
+  top: max(10px, env(safe-area-inset-top));
+  right: max(10px, env(safe-area-inset-right));
+  display: grid;
+  gap: 6px;
+  padding: 8px 10px;
+  border: 1px solid #348af7;
+  border-radius: 10px;
+  background: rgba(0, 26, 105, 0.92); /* Sage Navy */
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: #ffffff;
-  font-size: 20px;
-  line-height: 1;
-  cursor: pointer;
   touch-action: manipulation;
 }
-#mute:hover,
-#mute:focus-visible {
-  background: #348af7;
-  outline: none;
+.volume {
+  display: grid;
+  grid-template-columns: 18px 56px 110px;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+.volume-icon {
+  font-size: 14px;
+  text-align: center;
+}
+.volume input[type='range'] {
+  width: 100%;
+  margin: 0;
+  accent-color: #08c9c4; /* Sage Highlight Teal */
+  cursor: pointer;
+}
+.volume.is-muted {
+  color: #8a94b8;
+}
+.volume.is-muted .volume-icon {
+  filter: grayscale(1);
+  opacity: 0.6;
+}
+.volume.is-muted input[type='range'] {
+  accent-color: #6b7398;
+  opacity: 0.6;
+}
+@media (max-width: 480px) {
+  .volume {
+    grid-template-columns: 18px 90px;
+  }
+  .volume-name {
+    display: none;
+  }
 }
 
 /* Fallback error panel shown if content fails to load/validate at runtime. */

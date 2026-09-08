@@ -15,7 +15,7 @@ pnpm run check     # validate content + tests + typecheck + build (must pass bef
 
 Requires Node ≥ 22.12 (24 recommended) and pnpm 10 (`corepack enable` if pnpm isn't installed).
 
-Controls: drag the card left/right (mouse or touch), tap a choice tag, or press **←** / **→**. Add `?seed=1234` to the URL for a reproducible card order when reporting a bug. Sound effects (swoosh, game-over trombone, deck-cleared fanfare) are synthesised in the browser — no audio files; the speaker button top-right mutes them, and `balance.json → audio.volume` sets the level (0 removes the button).
+Controls: drag the card left/right (mouse or touch), tap a choice tag, or press **←** / **→**. Add `?seed=1234` to the URL for a reproducible card order when reporting a bug. Sound effects (swoosh, game-over trombone, deck-cleared fanfare) are synthesised in the browser; background music loops from `public/assets/audio/<file>` (named in `balance.json → audio.music`) and starts on the first swipe. Two sliders top-right set effects and music volume — slide to 0 to mute (the row greys out); starting levels are `audio.sfxVolume` / `audio.musicVolume`.
 
 ## How content works
 

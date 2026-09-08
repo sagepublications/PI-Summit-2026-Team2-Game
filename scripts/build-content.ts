@@ -26,6 +26,7 @@ const ROOT = resolve(import.meta.dirname, '..');
 const CSV_PATH = resolve(ROOT, 'content/game-content.csv');
 const BALANCE_PATH = resolve(ROOT, 'content/balance.json');
 const IMAGES_DIR = resolve(ROOT, 'public/assets/images');
+const AUDIO_DIR = resolve(ROOT, 'public/assets/audio');
 // Generated JSON is imported by the game (bundled + content-hashed by Vite), so a
 // deploy can never serve new code with stale cached content or vice versa.
 const OUT_DIR = resolve(ROOT, 'src/data');
@@ -82,6 +83,11 @@ function buildBalance(): Balance | undefined {
   if (!result.success) {
     for (const issue of result.error.issues) fail(`balance.json: ${issue.path.join('.') || '(root)'} – ${issue.message}`);
     return undefined;
+  }
+  // The music file is referenced by name; check it exists with exactly that case.
+  const audioFiles = new Set(existsSync(AUDIO_DIR) ? readdirSync(AUDIO_DIR) : []);
+  if (!audioFiles.has(result.data.audio.music)) {
+    fail(`balance.json: audio.music "${result.data.audio.music}" not found in public/assets/audio/ (filename must match exactly, including case)`);
   }
   return result.data;
 }

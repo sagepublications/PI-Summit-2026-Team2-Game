@@ -13,7 +13,7 @@
     "barTweenMs": 450
   },
   "dangerWithin": 20,
-  "audio": { "volume": 0.6 },
+  "audio": { "sfxVolume": 0.6, "musicVolume": 0.35, "music": "background-music.mp3" },
   "uiStrings": {
     "title": "Roadmap to Ruin",
     "intro": { "left": "Swipe left", "right": "Swipe right", "header": "LEARN THE ROPES" },
@@ -25,7 +25,7 @@
     "months": "MONTHS",
     "loading": "Dealing the cards…",
     "rotateDevice": "Rotate your device to play",
-    "soundOn": "Sound on",
-    "soundOff": "Sound off"
+    "sfxLabel": "Effects",
+    "musicLabel": "Music"
   }
 }
