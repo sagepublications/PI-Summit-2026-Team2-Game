@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="480" viewBox="0 0 200 200">
+  <!-- Profile picture of a cult leader: framed head with a halo of tiny followers -->
+  <circle cx="100" cy="100" r="62" fill="#4b1d15" stroke="#c9963c" stroke-width="5"/>
+  <circle cx="100" cy="92" r="30" fill="#e8c9a0"/>
+  <path d="M70 86 q30 -40 60 0 q-6 -16 -30 -16 q-24 0 -30 16z" fill="#2a1a10"/>
+  <circle cx="90" cy="92" r="3" fill="#181818"/><circle cx="110" cy="92" r="3" fill="#181818"/>
+  <path d="M92 106 q8 6 16 0" stroke="#181818" stroke-width="2.5" fill="none"/>
+  <path d="M60 162 q0 -30 40 -30 q40 0 40 30" fill="#1f2333"/>
+  <path d="M60 60 q40 -35 80 0" stroke="#c9963c" stroke-width="3" fill="none" stroke-dasharray="4 6"/>
+  <g fill="#e8c9a0">
+    <circle cx="48" cy="150" r="6"/><circle cx="152" cy="150" r="6"/><circle cx="40" cy="120" r="5"/><circle cx="160" cy="120" r="5"/>
+  </g>
+  <text x="100" y="180" font-family="Georgia, serif" font-size="10" fill="#c9963c" text-anchor="middle" letter-spacing="2">DEAR LEADER</text>
+</svg>

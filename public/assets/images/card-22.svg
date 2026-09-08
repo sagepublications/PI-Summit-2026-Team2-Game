@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="480" viewBox="0 0 200 200">
+  <!-- Branded tent pitched in an office -->
+  <rect x="20" y="40" width="160" height="10" fill="#3a3a3a"/>
+  <rect x="30" y="50" width="40" height="30" fill="#4a6d8c" opacity="0.6"/>
+  <rect x="130" y="50" width="40" height="30" fill="#4a6d8c" opacity="0.6"/>
+  <path d="M20 160 h160" stroke="#5a3a22" stroke-width="6"/>
+  <path d="M40 160 L100 80 L160 160 Z" fill="#2f6f5e" stroke="#c9963c" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M100 80 L100 160" stroke="#c9963c" stroke-width="3"/>
+  <path d="M100 160 L82 160 L100 110 Z" fill="#181818"/>
+  <circle cx="128" cy="130" r="13" fill="#f3ead8"/>
+  <text x="128" y="134" font-family="Georgia, serif" font-size="9" font-weight="bold" fill="#2f6f5e" text-anchor="middle">Sage</text>
+  <rect x="150" y="140" width="24" height="20" fill="#5a3a22"/>
+  <rect x="152" y="132" width="20" height="8" fill="#3a3a3a"/>
+  <path d="M100 80 v-14" stroke="#c9963c" stroke-width="3"/>
+  <path d="M100 66 l14 4 -14 4z" fill="#d64a3c"/>
+</svg>

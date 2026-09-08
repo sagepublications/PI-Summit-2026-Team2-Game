@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="480" height="480" viewBox="0 0 200 200">
-  <!-- A green tick wearing a party hat -->
-  <circle cx="100" cy="110" r="50" fill="#3f9b5a" stroke="#c9963c" stroke-width="4"/>
-  <path d="M72 112 l18 18 l38 -42" stroke="#f3ead8" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M100 62 l-24 8 l16 -48z" fill="#d64a3c"/>
-  <path d="M84 40 l6 6 M96 30 l4 4" stroke="#c9963c" stroke-width="3"/>
-  <circle cx="92" cy="22" r="5" fill="#c9963c"/>
-</svg>

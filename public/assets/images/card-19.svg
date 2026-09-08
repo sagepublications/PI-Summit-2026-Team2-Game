@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="480" viewBox="0 0 200 200">
+  <!-- Ghost swirling around a coffee machine -->
+  <rect x="60" y="60" width="80" height="110" rx="8" fill="#3a3a3a" stroke="#c9963c" stroke-width="4"/>
+  <rect x="70" y="70" width="60" height="22" rx="3" fill="#181818"/>
+  <rect x="76" y="76" width="30" height="8" rx="2" fill="#7fd18f"/>
+  <rect x="86" y="100" width="28" height="12" fill="#5a3a3a"/>
+  <path d="M92 112 v14" stroke="#4b1d15" stroke-width="3"/>
+  <rect x="80" y="126" width="30" height="24" rx="4" fill="#f3ead8"/>
+  <path d="M110 132 q9 0 9 6 q0 6 -9 6" stroke="#f3ead8" stroke-width="3" fill="none"/>
+  <path d="M30 150 q0 -60 40 -70 q30 -8 30 -40 q0 -25 30 -20 q20 5 15 30 q-5 20 -35 30 q-30 10 -30 60 l-10 -8 -10 8 -10 -8 -10 8z" fill="#e6e6ef" fill-opacity="0.85"/>
+  <ellipse cx="122" cy="34" rx="4" ry="6" fill="#181818"/><ellipse cx="136" cy="34" rx="4" ry="6" fill="#181818"/>
+  <path d="M124 48 q6 5 12 0" stroke="#181818" stroke-width="2" fill="none"/>
+</svg>

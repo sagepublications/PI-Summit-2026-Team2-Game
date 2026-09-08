@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="480" viewBox="0 0 200 200">
+  <!-- A badly put-together AI chat window -->
+  <rect x="30" y="35" width="140" height="130" rx="10" fill="#f3ead8" stroke="#c9963c" stroke-width="4" transform="rotate(-3 100 100)"/>
+  <rect x="30" y="35" width="140" height="22" rx="10" fill="#4a4f7a" transform="rotate(-3 100 100)"/>
+  <text x="100" y="50" font-family="Georgia, serif" font-size="10" fill="#f3ead8" text-anchor="middle" transform="rotate(-3 100 100)" letter-spacing="1">AI CHAT (beta)(beta)</text>
+  <rect x="42" y="70" width="70" height="18" rx="9" fill="#d8c3a0" transform="rotate(4 77 79)"/>
+  <rect x="88" y="96" width="76" height="18" rx="9" fill="#4a6d8c" transform="rotate(-6 126 105)"/>
+  <rect x="40" y="120" width="50" height="18" rx="9" fill="#d8c3a0" transform="rotate(9 65 129)"/>
+  <text x="126" y="109" font-family="ui-monospace, Consolas, monospace" font-size="8" fill="#f3ead8" text-anchor="middle" transform="rotate(-6 126 105)">undefined :)</text>
+  <rect x="45" y="142" width="90" height="14" rx="4" fill="#fff" stroke="#8a6a45" stroke-width="1.5" stroke-dasharray="3 2"/>
+  <rect x="140" y="140" width="22" height="18" rx="4" fill="#d64a3c" transform="rotate(12 151 149)"/>
+  <path d="M150 20 l4 10 M160 24 l-2 8" stroke="#d64a3c" stroke-width="3" stroke-linecap="round"/>
+</svg>

@@ -8,7 +8,7 @@ import { parseCardRow, type Balance } from '../src/types/content.ts';
 import rawBalance from '../content/balance.json' with { type: 'json' };
 
 const balance = rawBalance as Balance;
-const teamExport = () => decodeCsv(readFileSync(resolve(import.meta.dirname, '../docs/content-v1.csv')));
+const teamExport = () => decodeCsv(readFileSync(resolve(import.meta.dirname, '../docs/content-v3.csv')));
 
 test("the team's real export parses: headers map, trailing empty column ignored, row numbers match the sheet", () => {
   const { text, fellBack } = teamExport();
@@ -16,7 +16,7 @@ test("the team's real export parses: headers map, trailing empty column ignored,
   const parsed = parseCsvRows(text);
   assert.deepEqual(parsed.errors, []);
   assert.deepEqual(parsed.warnings, []); // "Notes" is a known column; the empty trailing header is silently dropped
-  assert.equal(parsed.rows.length, 50);
+  assert.equal(parsed.rows.length, 59);
   assert.equal(parsed.rows[0]!.row, 2);
   assert.equal(parsed.rows[0]!.raw.id, '1');
   assert.equal(parsed.rows[0]!.raw.type, 'Game over card');
@@ -26,23 +26,9 @@ test("the team's real export parses: headers map, trailing empty column ignored,
   assert.equal(start.row, 16);
   assert.match(start.raw.situation!, /Congratulations you have taken over/);
   assert.match(start.raw.situation!, /\n/);
-  // The WIP Azure row keeps its spreadsheet number.
+  // Rows after multi-line cells keep their spreadsheet numbers.
   assert.equal(parsed.rows.find((r) => r.raw.id === '36')!.row, 37);
-});
-
-test("every finished row in the team's export parses into a card (given an image), and the counts are right", () => {
-  const parsed = parseCsvRows(teamExport().text);
-  const outcome = { ok: 0, template: 0, wip: 0, incomplete: 0, error: [] as string[] };
-  for (const { row, raw } of parsed.rows) {
-    const r = parseCardRow(raw, { allowedEffects: balance.allowedEffects, resolveIllustration: (id) => `card-${id}.svg` });
-    if (r.status === 'ok') outcome.ok++;
-    else if (r.status === 'skipped') outcome[r.reason]++;
-    else outcome.error.push(`row ${row}: ${r.errors.join('; ')}`);
-  }
-  assert.deepEqual(outcome.error, []);
-  assert.equal(outcome.ok, 20); // 8 game over + 6 end + 2 start + 4 regular
-  assert.equal(outcome.wip, 1);
-  assert.equal(outcome.template, 29);
+  assert.equal(parsed.rows.find((r) => r.raw.id === '60')!.row, 60);
 });
 
 test("the v2 export: 28 finished cards, one half-written row skipped, lost minus signs warned about", () => {
@@ -64,6 +50,23 @@ test("the v2 export: 28 finished cards, one half-written row skipped, lost minus
   assert.equal(outcome.template, 21); // 20 placeholder rows + row 18 (typed but empty)
   assert.equal(outcome.wip, 0);
   assert.ok(outcome.minusWarnings >= 10);
+});
+
+test('the v3 export: every finished row parses; only row 39 (+30/-30, no-effect choice) is rejected by the rules', () => {
+  const { text } = decodeCsv(readFileSync(resolve(import.meta.dirname, '../docs/content-v3.csv')));
+  const parsed = parseCsvRows(text);
+  assert.deepEqual(parsed.errors, []);
+  const errors: Record<string, string[]> = {};
+  let ok = 0;
+  for (const { raw } of parsed.rows) {
+    const r = parseCardRow(raw, { allowedEffects: balance.allowedEffects, resolveIllustration: (id) => `card-${id}.webp` });
+    if (r.status === 'ok') ok++;
+    else if (r.status === 'error') errors[raw.id!] = r.errors;
+  }
+  assert.equal(ok, 45); // 8 game over + 6 end + 2 start + 29 regular
+  assert.deepEqual(Object.keys(errors), ['39']);
+  assert.ok(errors['39']!.some((e) => /30 on quality is not allowed/.test(e)));
+  assert.ok(errors['39']!.some((e) => /Swipe right effect must change at least one metric/.test(e)));
 });
 
 test('a blank Excel row (",,,,,,,,,") keeps later row numbers aligned and is treated as a template row', () => {
