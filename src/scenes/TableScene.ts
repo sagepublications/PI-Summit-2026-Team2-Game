@@ -7,6 +7,7 @@ import { CardView } from '../ui/CardView';
 import { Hud } from '../ui/Hud';
 import { DESIGN, theme } from '../ui/theme';
 import { pick } from '../utils/random';
+import type { Sfx } from '../utils/sfx';
 import { Tweener } from '../utils/tween';
 
 type Phase = 'intro' | 'start' | 'playing' | 'gameover' | 'end';
@@ -45,6 +46,7 @@ export class TableScene implements Scene {
     private readonly data: GameData,
     private readonly assets: TableSceneAssets,
     private readonly rng: () => number,
+    private readonly sfx: Sfx,
   ) {
     const frame = new Graphics()
       .roundRect(0, 0, DESIGN.width, DESIGN.height, 48)
@@ -195,6 +197,7 @@ export class TableScene implements Scene {
   }
 
   private async advance(view: CardView, side: Side): Promise<void> {
+    this.sfx.swoosh(side === 'left' ? -1 : 1);
     const flyAway = view.flyOff(side).then(() => {
       this.root.removeChild(view);
       view.destroy({ children: true, texture: false });
@@ -226,9 +229,11 @@ export class TableScene implements Scene {
         if (result.outcome.kind === 'gameover') {
           const { metric, bound } = result.outcome;
           this.hud.markFailed(metric);
+          this.sfx.lose();
           await this.deal(pick(this.data.gameover[metric][bound], this.rng), 'gameover');
         } else {
           this.endedByExhaustion = true;
+          this.sfx.win();
           // Deliberate reading of spec §2: the team authored a dedicated "completed all
           // cards" end card, so it takes precedence over the month-band card on a full clear.
           const pool = this.data.endExhausted.length > 0 ? this.data.endExhausted : pickEndBand(this.data.endBands, run.months);

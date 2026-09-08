@@ -5,6 +5,7 @@ import { TableScene, type TableSceneAssets } from './scenes/TableScene';
 import { METRICS, type Metric } from './types/content';
 import { theme } from './ui/theme';
 import { rngFromQuery } from './utils/rng';
+import { Sfx } from './utils/sfx';
 
 function showFatalError(message: string): void {
   const el = document.createElement('div');
@@ -80,8 +81,25 @@ async function main(): Promise<void> {
   const { rng, seed } = rngFromQuery(window.location.search);
   if (seed !== null) console.info(`Seeded run: ${seed}`);
 
+  const sfx = new Sfx(data.balance.audio.volume);
+  const muteButton = document.getElementById('mute');
+  if (muteButton) {
+    const { soundOn, soundOff } = data.balance.uiStrings;
+    const render = () => {
+      muteButton.textContent = sfx.muted ? '🔇' : '🔊';
+      muteButton.setAttribute('aria-label', sfx.muted ? soundOff : soundOn);
+      muteButton.title = sfx.muted ? soundOff : soundOn;
+    };
+    muteButton.addEventListener('click', () => {
+      sfx.muted = !sfx.muted;
+      render();
+    });
+    render();
+    muteButton.hidden = data.balance.audio.volume <= 0;
+  }
+
   const scenes = new SceneManager(app);
-  scenes.goTo(new TableScene(data, assets, rng));
+  scenes.goTo(new TableScene(data, assets, rng, sfx));
 }
 
 main().catch((err: unknown) => showFatalError(err instanceof Error ? err.message : String(err)));

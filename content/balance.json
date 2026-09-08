@@ -13,6 +13,7 @@
     "barTweenMs": 450
   },
   "dangerWithin": 20,
+  "audio": { "volume": 0.6 },
   "uiStrings": {
     "title": "Roadmap to Ruin",
     "intro": { "left": "Swipe left", "right": "Swipe right", "header": "LEARN THE ROPES" },
@@ -23,6 +24,8 @@
     "month": "MONTH",
     "months": "MONTHS",
     "loading": "Dealing the cards…",
-    "rotateDevice": "Rotate your device to play"
+    "rotateDevice": "Rotate your device to play",
+    "soundOn": "Sound on",
+    "soundOff": "Sound off"
   }
 }

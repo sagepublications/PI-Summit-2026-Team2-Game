@@ -67,6 +67,28 @@ body {
   letter-spacing: 0.1em;
 }
 
+/* Sound toggle — the one control that lives outside the canvas. */
+#mute {
+  position: fixed;
+  top: max(12px, env(safe-area-inset-top));
+  right: max(12px, env(safe-area-inset-right));
+  width: 44px;
+  height: 44px;
+  border: 2px solid #348af7;
+  border-radius: 50%;
+  background: #001a69;
+  color: #ffffff;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+#mute:hover,
+#mute:focus-visible {
+  background: #348af7;
+  outline: none;
+}
+
 /* Fallback error panel shown if content fails to load/validate at runtime. */
 .fatal-error {
   position: fixed;
