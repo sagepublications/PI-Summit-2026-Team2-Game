@@ -103,6 +103,12 @@ export class TableScene implements Scene {
     // and on low-DPR phones, instead of drawing at full size and downsampling.
     this.textResolution = Math.max(0.5, (window.devicePixelRatio || 1) * scale);
     applyTextResolution(this.root, this.textResolution);
+    // Let DOM overlays (the audio drawer) anchor to the frame's top-right corner
+    // rather than the window's, so they float over the game at every viewport.
+    const style = document.documentElement.style;
+    style.setProperty('--frame-top', `${this.root.position.y}px`);
+    style.setProperty('--frame-right', `${width - (this.root.position.x + DESIGN.width * scale)}px`);
+    style.setProperty('--frame-scale', String(scale));
     // A phone on its side is unplayable at this aspect; ask for portrait. Desktop
     // windows that happen to be short are left alone (they can be resized).
     const touchDevice = window.matchMedia('(pointer: coarse)').matches || navigator.maxTouchPoints > 0;

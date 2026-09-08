@@ -99,13 +99,20 @@ async function main(): Promise<void> {
   scenes.goTo(new TableScene(data, assets, rng, sfx));
 }
 
-/** Two range sliders (effects, music); sliding to 0 mutes and greys the row. */
+/**
+ * Audio drawer: a speaker icon that slides out two range sliders (effects,
+ * music). Sliding to 0 mutes and greys the row; the icon shows 🔇 when both are 0.
+ */
 function setupVolumeControls(sfx: Sfx, music: Music, sfxLabel: string, musicLabel: string): void {
-  const panel = document.getElementById('audio-controls');
+  const drawer = document.getElementById('audio');
+  const toggle = document.getElementById('audio-toggle');
   const sfxInput = document.getElementById('sfx-volume') as HTMLInputElement | null;
   const musicInput = document.getElementById('music-volume') as HTMLInputElement | null;
-  if (!panel || !sfxInput || !musicInput) return;
+  if (!drawer || !toggle || !sfxInput || !musicInput) return;
 
+  const renderIcon = () => {
+    toggle.textContent = sfx.getVolume() === 0 && music.volume === 0 ? '🔇' : '🔊';
+  };
   const wire = (input: HTMLInputElement, label: string, initial: number, apply: (v: number) => void) => {
     const row = input.closest('.volume') as HTMLElement;
     row.querySelector('.volume-name')!.textContent = label;
@@ -120,11 +127,23 @@ function setupVolumeControls(sfx: Sfx, music: Music, sfxLabel: string, musicLabe
       const v = Number(input.value) / 100;
       apply(v);
       render(v);
+      renderIcon();
     });
   };
   wire(sfxInput, sfxLabel, sfx.getVolume(), (v) => sfx.setVolume(v));
   wire(musicInput, musicLabel, music.volume, (v) => music.setVolume(v));
-  panel.hidden = false;
+  renderIcon();
+
+  const setOpen = (open: boolean) => {
+    drawer.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+  };
+  toggle.addEventListener('click', () => setOpen(!drawer.classList.contains('open')));
+  // Tapping the game (anything outside the drawer) closes it.
+  window.addEventListener('pointerdown', (e) => {
+    if (drawer.classList.contains('open') && !drawer.contains(e.target as Node)) setOpen(false);
+  });
+  drawer.hidden = false;
 }
 
 main().catch((err: unknown) => showFatalError(err instanceof Error ? err.message : String(err)));

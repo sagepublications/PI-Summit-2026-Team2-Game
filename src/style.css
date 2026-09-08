@@ -67,22 +67,63 @@ body {
   letter-spacing: 0.1em;
 }
 
-/* Volume controls — the only UI outside the canvas. Slide to 0 to mute (goes grey). */
-#audio-controls {
+/* Audio drawer — the only UI outside the canvas. A translucent speaker icon sits
+   over the game; tapping it slides the two volume sliders out beneath it. */
+#audio {
+  /* Floats over the frame's top-right corner (variables set by TableScene.resize);
+     takes no layout space and never affects the card. */
   position: fixed;
-  top: max(10px, env(safe-area-inset-top));
-  right: max(10px, env(safe-area-inset-right));
+  top: max(calc(var(--frame-top, 0px) + 22px * var(--frame-scale, 1)), env(safe-area-inset-top));
+  right: max(calc(var(--frame-right, 0px) + 22px * var(--frame-scale, 1)), env(safe-area-inset-right));
+  display: grid;
+  justify-items: end;
+  gap: 6px;
+  z-index: 10;
+}
+#audio-toggle {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(52, 138, 247, 0.6);
+  border-radius: 50%;
+  background: rgba(0, 26, 105, 0.35); /* Sage Navy, translucent */
+  color: #ffffff;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity 150ms ease, background-color 150ms ease;
+  touch-action: manipulation;
+}
+#audio-toggle:hover,
+#audio-toggle:focus-visible,
+#audio.open #audio-toggle {
+  opacity: 1;
+  background: rgba(0, 26, 105, 0.92);
+  outline: none;
+}
+#audio-controls {
   display: grid;
   gap: 6px;
   padding: 8px 10px;
   border: 1px solid #348af7;
   border-radius: 10px;
-  background: rgba(0, 26, 105, 0.92); /* Sage Navy */
+  background: rgba(0, 26, 105, 0.92);
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #ffffff;
   touch-action: manipulation;
+  /* Closed: slid up under the icon and faded out; not clickable. */
+  transform: translateY(-8px) scaleY(0.9);
+  transform-origin: top right;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 180ms ease, opacity 150ms ease;
+}
+#audio.open #audio-controls {
+  transform: none;
+  opacity: 1;
+  pointer-events: auto;
 }
 .volume {
   display: grid;
