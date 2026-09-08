@@ -1,6 +1,6 @@
-# Project rules (from docs/spec-v0.pdf §5)
+# Project rules (from docs/spec.v1.pdf §5)
 
-Read `docs/spec-v0.pdf` (or `docs/spec-*.pdf`, latest) fully before implementing gameplay.
+Read `docs/spec.v1.pdf` (latest spec) fully before changing gameplay.
 
 ## Priorities
 1. Complete, playable gameplay loop first — get end-to-end playable early.
@@ -13,19 +13,20 @@ TypeScript · PixiJS 8 · Vite · pnpm · plain CSS · JSON content · localStor
 Fully client-side. **No** backend, React, Vue, ECS, or state-management libraries. Svelte only if a clear UI need arises.
 
 ## Content
-- Content lives in `content/game-content.csv` (one authored item = one row) and `content/balance.json`.
-- Schema is defined **once** in `src/types/content.ts` (Zod); build script and game both use it.
+- Content lives in `content/game-content.csv` (the team's spreadsheet export, one card = one row — column format is the team's, documented in README) and `content/balance.json`.
+- Schema, spreadsheet parsers (`parseCardRow`, `parseEffects`, `parseTrigger`) and cross-card rules (`validateContentSet`) are defined **once** in `src/types/content.ts`; build script, game and tests all use them.
 - `pnpm run content` validates and writes `src/data/*.json` (imported + bundled). Generated JSON **is committed**; never edit it by hand.
-- CSV cells are strings: use `csvInt`/`csvNumber`/`csvEnum`/`csvBool`/`optionalText` helpers from `src/types/content.ts` for non-text columns.
-- Asset filenames must match disk exactly (case-sensitive on CI/Pages).
-- Never hard-code content or balance numbers in game logic.
-- Validation errors must name the spreadsheet row and the problem.
+- Every card needs an illustration `public/assets/images/card-<ID>.<png|svg|jpg|webp>`; the "Situation illustration" cell is the art prompt. Filenames are case-sensitive on CI/Pages.
+- Never hard-code content, balance numbers or UI strings in game logic — they come from `balance.json` (`uiStrings`, `allowedEffects`, timings…).
+- Validation errors must name the spreadsheet row and the problem; warnings must not fail the build (unless `--strict`).
 
 ## Commands
-`pnpm run dev` · `pnpm run build` · `pnpm run check` (content → typecheck → build). Run `check` frequently; never leave it red.
+`pnpm run dev` · `pnpm run build` · `pnpm run test` · `pnpm run check` (content → test → typecheck → build). Run `check` frequently; never leave it red. `?seed=N` in the URL makes a run reproducible.
 
 ## Layout
-`src/main.ts` boots Pixi + `SceneManager`; scenes in `src/scenes/` (`Scene` interface); reusable UI in `src/ui/`; gameplay systems in `src/systems/`; helpers in `src/utils/`.
+`src/main.ts` boots Pixi, preloads images (never fatal), starts `TableScene` via `SceneManager`; the whole game is one scene with a HUD and one `CardView` at a time, driven by a phase machine (intro → playing → gameover → end → start …). Pure rules live in `src/systems/run.ts`.
+- `src/systems/`, `src/types/`, `src/utils/random.ts`, `src/utils/rng.ts` must not import `pixi.js` or touch the DOM — they are type-checked under `tsconfig.node.json` and run in `node:test`.
+- All layout is in a 1080×1920 design space scaled to fit the window (`src/ui/theme.ts`); drag maths is done in design space.
 
 ## Git
 Do not mention Claude in commit messages or add it as a co-author.

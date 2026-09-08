@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="480" viewBox="0 0 200 200">
+  <!-- Superyacht -->
+  <path d="M20 140 q80 20 160 0 l-20 25 h-120z" fill="#f3ead8" stroke="#c9963c" stroke-width="3"/>
+  <rect x="60" y="112" width="80" height="28" rx="6" fill="#e6e6ef"/>
+  <rect x="80" y="90" width="45" height="22" rx="5" fill="#d9d9e6"/>
+  <g fill="#4a6d8c">
+    <rect x="68" y="120" width="10" height="8"/><rect x="84" y="120" width="10" height="8"/><rect x="100" y="120" width="10" height="8"/><rect x="116" y="120" width="10" height="8"/>
+    <rect x="88" y="96" width="10" height="8"/><rect x="106" y="96" width="10" height="8"/>
+  </g>
+  <path d="M125 90 v-30" stroke="#c9963c" stroke-width="3"/>
+  <path d="M125 62 l18 6 -18 6z" fill="#d64a3c"/>
+  <path d="M15 170 q20 -10 40 0 q20 -10 40 0 q20 -10 40 0 q20 -10 40 0" stroke="#4a6d8c" stroke-width="4" fill="none"/>
+</svg>

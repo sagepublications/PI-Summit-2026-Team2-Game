@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="480" viewBox="0 0 200 200">
+  <!-- A face winking -->
+  <circle cx="100" cy="100" r="55" fill="#e8c9a0" stroke="#c9963c" stroke-width="4"/>
+  <path d="M60 78 q40 -40 80 0 q-40 -20 -80 0z" fill="#5a3a22"/>
+  <circle cx="82" cy="98" r="4.5" fill="#181818"/>
+  <path d="M108 98 q10 -6 20 0" stroke="#181818" stroke-width="3" fill="none"/>
+  <path d="M84 124 q16 14 34 -4" stroke="#181818" stroke-width="3" fill="none"/>
+  <path d="M150 60 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3z" fill="#fff"/>
+</svg>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="480" viewBox="0 0 200 200">
+  <!-- A single beige dot on a dark canvas, framed in gold -->
+  <rect x="35" y="35" width="130" height="130" fill="#181818" stroke="#c9963c" stroke-width="8"/>
+  <rect x="47" y="47" width="106" height="106" fill="none" stroke="#8a6a45" stroke-width="2"/>
+  <circle cx="100" cy="100" r="9" fill="#d8c3a0"/>
+</svg>
