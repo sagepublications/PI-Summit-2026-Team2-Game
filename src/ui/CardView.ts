@@ -77,7 +77,7 @@ export class CardView extends Container {
       },
     });
     // Auto-shrink long text so it never spills out of the box.
-    const maxTextHeight = illustration.centerY - illustration.radius - textBox.top - textBox.padding * 2 - 40;
+    const maxTextHeight = illustration.top - textBox.top - textBox.padding * 2 - 20;
     while (situation.height > maxTextHeight && situation.style.fontSize > theme.font.situationMin) {
       situation.style.fontSize -= 2;
       situation.style.lineHeight = situation.style.fontSize * 1.25;
@@ -91,35 +91,41 @@ export class CardView extends Container {
     box.rotation = (textBox.tiltDeg * Math.PI) / 180;
     this.addChild(box);
 
-    // ---- illustration in a gold ring
-    const ringY = top + illustration.centerY; // centerY is measured from the card's top edge
-    const ring = new Graphics()
-      .circle(0, ringY, illustration.radius)
+    // ---- illustration in a gold-framed portrait panel
+    const panelY = top + illustration.top + illustration.height / 2;
+    const { width: pw, height: ph, radius: pr, padding: pp } = illustration;
+    const panel = new Graphics()
+      .roundRect(-pw / 2, panelY - ph / 2, pw, ph, pr)
       .fill(theme.colors.ink)
-      .stroke({ width: 6, color: theme.colors.gold });
-    this.addChild(ring);
+      .stroke({ width: 5, color: theme.colors.gold });
+    this.addChild(panel);
     if (opts.texture) {
       const sprite = new Sprite(opts.texture);
       sprite.anchor.set(0.5);
-      const scale = Math.min(illustration.imageSize / sprite.texture.width, illustration.imageSize / sprite.texture.height);
+      const innerW = pw - pp * 2;
+      const innerH = ph - pp * 2;
+      const scale = Math.min(innerW / sprite.texture.width, innerH / sprite.texture.height);
       sprite.scale.set(scale);
-      sprite.position.set(0, ringY);
-      this.addChild(sprite);
+      sprite.position.set(0, panelY);
+      // Round the picture's own corners to match the panel.
+      const mask = new Graphics().roundRect(-innerW / 2, panelY - innerH / 2, innerW, innerH, pr - pp).fill(0xffffff);
+      sprite.mask = mask;
+      this.addChild(mask, sprite);
     } else {
       const q = new Text({
         text: '?',
         style: { fontFamily: theme.font.family, fontSize: 160, fill: theme.colors.gold, fontWeight: 'bold' },
       });
       q.anchor.set(0.5);
-      q.position.set(0, ringY);
+      q.position.set(0, panelY);
       this.addChild(q);
     }
 
     // ---- side arrows
     this.leftArrow = new Graphics().poly([-14, 0, 8, -18, 8, 18]).fill(theme.colors.gold);
-    this.leftArrow.position.set(left + 46, ringY);
+    this.leftArrow.position.set(left + 46, panelY);
     this.rightArrow = new Graphics().poly([14, 0, -8, -18, -8, 18]).fill(theme.colors.gold);
-    this.rightArrow.position.set(-left - 46, ringY);
+    this.rightArrow.position.set(-left - 46, panelY);
     this.leftArrow.alpha = this.rightArrow.alpha = 0.55;
     this.addChild(this.leftArrow, this.rightArrow);
 

@@ -38,8 +38,8 @@ export const theme = {
     header: { y: 372 },
     card: { x: 80, y: 430, width: 920, height: 1420, radius: 44 },
     textBox: { inset: 50, top: 50, minHeight: 250, padding: 40, tiltDeg: -1.5 },
-    /** centerY is measured from the card's top edge. */
-    illustration: { centerY: 720, radius: 190, imageSize: 300 },
+    /** Portrait picture panel (2:3 art fills it); `top` is measured from the card's top edge. */
+    illustration: { top: 370, width: 560, height: 780, radius: 28, padding: 14 },
     choice: { width: 370, height: 170, bottom: 60, tiltDeg: 3 },
   },
 } as const;
