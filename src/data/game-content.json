@@ -596,7 +596,7 @@
     "type": "regular",
     "situation": "Milan has started a cult. He's insisting on being called Dear Leader.",
     "illustration": {
-      "file": "card-21.svg",
+      "file": "card-21.webp",
       "prompt": "Milan profile picture"
     },
     "left": {
@@ -677,7 +677,7 @@
     "type": "regular",
     "situation": "Engineering opens a part of the codebase last touched in 2014. The comments simply say:\n\n\"DO NOT CHANGE THIS.\"",
     "illustration": {
-      "file": "card-24.svg",
+      "file": "card-24.webp",
       "prompt": "Ancient computer covered in hazard tape."
     },
     "left": {
@@ -893,7 +893,7 @@
     "type": "regular",
     "situation": "Martha asks how long the new feature will take. Engineering says: “Somewhere between two weeks and the heat death of the universe.",
     "illustration": {
-      "file": "card-34.svg",
+      "file": "card-34.webp",
       "prompt": "A developer (Josh) staring thoughtfully at a calendar that stretches into outer space."
     },
     "left": {
