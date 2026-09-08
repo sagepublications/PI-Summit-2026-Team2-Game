@@ -102,6 +102,17 @@ test('end band picks the highest minMonths ≤ months, and bands are inclusive a
   assert.deepEqual(ids(400), ['e25']);
 });
 
+test('durations read naturally in months and years', async () => {
+  const { formatDuration } = await import('../src/systems/run.ts');
+  const l = { month: 'month', months: 'months', year: 'year', years: 'years' };
+  assert.equal(formatDuration(0, l), '0 months');
+  assert.equal(formatDuration(1, l), '1 month');
+  assert.equal(formatDuration(7, l), '7 months');
+  assert.equal(formatDuration(12, l), '12 months (1 year)');
+  assert.equal(formatDuration(14, l), '14 months (1 year, 2 months)');
+  assert.equal(formatDuration(25, l), '25 months (2 years, 1 month)');
+});
+
 test('seeded runs are reproducible', async () => {
   const { mulberry32 } = await import('../src/utils/rng.ts');
   const cards = ['a', 'b', 'c', 'd', 'e', 'f'].map((id) => regular(id, { quality: 10 }));

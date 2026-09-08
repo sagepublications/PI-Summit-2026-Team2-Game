@@ -2,7 +2,7 @@ import { Container, Graphics, Text, type Texture } from 'pixi.js';
 import type { Scene } from './Scene';
 import type { GameData } from '../game/content';
 import type { Card, Metric } from '../types/content';
-import { applyChoice, createRun, pickEndBand, type Run, type Side } from '../systems/run';
+import { applyChoice, createRun, formatDuration, pickEndBand, type Run, type Side } from '../systems/run';
 import { CardView } from '../ui/CardView';
 import { Hud } from '../ui/Hud';
 import { DESIGN, theme } from '../ui/theme';
@@ -40,6 +40,7 @@ export class TableScene implements Scene {
   private busy = false;
   private lastMonths = 0;
   private endedByExhaustion = false;
+  private lastFailure: { metric: Metric; bound: 0 | 100 } | null = null;
   private textResolution = 1;
 
   constructor(
@@ -151,6 +152,21 @@ export class TableScene implements Scene {
     }
   }
 
+  /** The facts on the end card: how long the product lasted and what finished it. */
+  private endSummary(months: number): { label: string; value: string }[] {
+    const ui = this.data.balance.uiStrings;
+    const sentenceCase = (s: string) => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+    const reason = this.lastFailure
+      ? ui.reasonHit
+          .replace('{metric}', sentenceCase(ui.metricLabels[this.lastFailure.metric]))
+          .replace('{bound}', String(this.lastFailure.bound))
+      : ui.reasonCleared;
+    return [
+      { label: ui.survived, value: formatDuration(months, { month: ui.month.toLowerCase(), months: ui.months.toLowerCase(), year: ui.year, years: ui.years }) },
+      { label: ui.endedBy, value: reason },
+    ];
+  }
+
   /** Put a card on the table for the given phase. Input stays locked until it has landed. */
   private async deal(content: Card, phase: Phase): Promise<void> {
     this.busy = true;
@@ -168,6 +184,7 @@ export class TableScene implements Scene {
       leftLabel: content.left.text ?? fallback?.left ?? '←',
       rightLabel: content.right.text ?? fallback?.right ?? '→',
       texture: this.assets.cards.get(content.id) ?? null,
+      summary: phase === 'end' ? this.endSummary(months) : undefined,
       balance: this.data.balance,
       tweener: this.tweener,
       onPreview: (side) => this.hud.preview(side && phase === 'playing' ? content[side].effects : null),
@@ -214,6 +231,7 @@ export class TableScene implements Scene {
       case 'start': {
         this.run = createRun(this.data.regular, this.data.balance, this.rng);
         this.endedByExhaustion = false;
+        this.lastFailure = null;
         this.hud.markFailed(null);
         this.hud.reset(this.run.metrics);
         await flyAway;
@@ -234,11 +252,13 @@ export class TableScene implements Scene {
         this.lastMonths = run.months;
         if (result.outcome.kind === 'gameover') {
           const { metric, bound } = result.outcome;
+          this.lastFailure = { metric, bound };
           this.hud.markFailed(metric);
           this.sfx.lose();
           await this.deal(pick(this.data.gameover[metric][bound], this.rng), 'gameover');
         } else {
           this.endedByExhaustion = true;
+          this.lastFailure = null;
           this.sfx.win();
           // Deliberate reading of spec §2: the team authored a dedicated "completed all
           // cards" end card, so it takes precedence over the month-band card on a full clear.

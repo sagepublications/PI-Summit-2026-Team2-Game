@@ -52,6 +52,8 @@ Rules the build enforces: every ID unique; one or more Game over card for each o
 
 Intro card (first load) → regular cards drawn at random, each once, one month each → a metric hits 0/100 → matching Game over card → End card for the month band → "new venture" Start card → next run. If the deck runs out first, the exhaustion End card is shown directly.
 
+The End card carries the end-of-game summary: **Survived** (months, with years once past 12), **Ended by** ("Team hit 0" or "Every card played…") and, as the outcome, the card's own text. Labels are in `balance.json → uiStrings` (`survived`, `endedBy`, `reasonHit` with `{metric}`/`{bound}`, `reasonCleared`).
+
 ## Project layout
 
 ```

@@ -9,6 +9,8 @@ export interface CardViewOptions {
   leftLabel: string;
   rightLabel: string;
   texture: Texture | null;
+  /** End-of-game facts (time survived, reason) shown between the text and the picture. */
+  summary?: { label: string; value: string }[];
   balance: Balance;
   tweener: Tweener;
   /** Fired while dragging: which side is being previewed, or null. */
@@ -93,7 +95,42 @@ export class CardView extends Container {
 
     // ---- illustration in a framed portrait panel, as large as the card allows:
     // everything between the text box and the choice tags, at 2:3.
-    const boxBottom = top + textBox.top + boxHeight;
+    let boxBottom = top + textBox.top + boxHeight;
+
+    // ---- end-of-game summary rows (only on end cards)
+    if (opts.summary && opts.summary.length > 0) {
+      const s = theme.layout.summary;
+      const rows = new Container();
+      let y = s.padding;
+      for (const { label, value } of opts.summary) {
+        const l = new Text({
+          text: label.toUpperCase(),
+          style: { fontFamily: theme.font.family, fontSize: theme.font.label, fill: theme.colors.boxText, letterSpacing: 3, fontWeight: 'bold' },
+        });
+        l.position.set(s.padding, y + 4);
+        const v = new Text({
+          text: value,
+          style: {
+            fontFamily: theme.font.family,
+            fontSize: theme.font.summary,
+            fill: theme.colors.boxText,
+            fontWeight: '600',
+            wordWrap: true,
+            wordWrapWidth: boxWidth - s.padding * 2 - s.labelWidth,
+          },
+        });
+        v.position.set(s.padding + s.labelWidth, y);
+        rows.addChild(l, v);
+        y += Math.max(l.height, v.height) + s.rowGap;
+      }
+      const height = y - s.rowGap + s.padding;
+      const panel = new Container();
+      panel.addChild(new Graphics().rect(0, 0, boxWidth, height).fill(theme.colors.box), rows);
+      panel.position.set(-boxWidth / 2, boxBottom + s.gap);
+      this.addChild(panel);
+      boxBottom += s.gap + height;
+    }
+
     const tagTop = -top - choice.bottom - choice.height;
     const { gap, radius: pr, padding: pp } = illustration;
     const ph = tagTop - boxBottom - gap * 2;

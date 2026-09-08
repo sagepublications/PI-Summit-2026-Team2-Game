@@ -114,6 +114,13 @@ export const BalanceSchema = z.object({
     metricLabels: z.object({ team: label, quality: label, deadline: label, budget: label }),
     month: label,
     months: label,
+    year: label,
+    years: label,
+    /** End-of-game summary rows. `reasonHit` may use {metric} and {bound}. */
+    survived: label,
+    endedBy: label,
+    reasonHit: label,
+    reasonCleared: label,
     loading: label,
     rotateDevice: label,
     sfxLabel: label,

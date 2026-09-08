@@ -52,6 +52,7 @@ export const theme = {
     label: 24,
     header: 34,
     delta: 30,
+    summary: 30,
   },
   layout: {
     margin: 60,
@@ -59,6 +60,8 @@ export const theme = {
     header: { y: 266 },
     card: { x: 80, y: 322, width: 920, height: 1538, radius: 44 },
     textBox: { inset: 50, top: 40, minHeight: 220, maxHeight: 340, padding: 34, tiltDeg: -1.5 },
+    /** End-of-game summary rows (label · value) under the text box. */
+    summary: { gap: 22, padding: 26, rowGap: 14, labelWidth: 200 },
     /**
      * Portrait picture panel. Its size is worked out per card: it takes all the
      * height between the text box and the choice tags (minus `gap`), at 2:3.

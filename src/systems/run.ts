@@ -73,6 +73,25 @@ export function applyChoice(run: Run, side: Side, balance: Balance): ChoiceResul
   return { deltas, before, after, outcome: run.current ? { kind: 'continue' } : { kind: 'exhausted' } };
 }
 
+export interface DurationLabels {
+  month: string;
+  months: string;
+  year: string;
+  years: string;
+}
+
+/** "14 months (1 year, 2 months)"; below a year just "7 months"; "1 month" singular. */
+export function formatDuration(totalMonths: number, l: DurationLabels): string {
+  const unit = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
+  const plain = unit(totalMonths, l.month, l.months);
+  if (totalMonths < 12) return plain;
+  const years = Math.floor(totalMonths / 12);
+  const months = totalMonths % 12;
+  const parts = [unit(years, l.year, l.years)];
+  if (months > 0) parts.push(unit(months, l.month, l.months));
+  return `${plain} (${parts.join(', ')})`;
+}
+
 /** End card for a month count: the band with the highest minMonths ≤ months. */
 export function pickEndBand(endCards: readonly Card[], months: number): Card[] {
   let best = -1;
