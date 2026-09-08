@@ -1,8 +1,8 @@
-# PI Summit 2026 – Team 2 Game
+# Keep It Alive – PI Summit 2026 Team 2
 
-Browser game built with **TypeScript + PixiJS 8 + Vite + pnpm**. Fully client-side. Spec: [`docs/spec-v0.pdf`](docs/spec-v0.pdf).
+A Reigns-style swipe game: keep your product alive for as many months as you can by balancing **Team, Quality, Deadline and Budget** while every card offers a damned-if-you-do, damned-if-you-don't choice. Any metric hitting 0 **or** 100 ends the run.
 
-> The game concept, rules and real content are decided at the planning meeting. This repo currently contains the complete tech stack, content pipeline, CI and a placeholder Start → Game → Game Over flow ready to be filled in.
+Built with **TypeScript + PixiJS 8 + Vite + pnpm**, fully client-side. Spec: [`docs/spec.v1.pdf`](docs/spec.v1.pdf).
 
 ## Quick start
 
@@ -10,56 +10,67 @@ Browser game built with **TypeScript + PixiJS 8 + Vite + pnpm**. Fully client-si
 pnpm install
 pnpm run dev       # local dev server
 pnpm run build     # production build -> dist/
-pnpm run check     # validate content + typecheck + build (must pass before merging)
+pnpm run check     # validate content + tests + typecheck + build (must pass before merging)
 ```
 
 Requires Node ≥ 22.12 (24 recommended) and pnpm 10 (`corepack enable` if pnpm isn't installed).
 
+Controls: drag the card left/right (mouse or touch), tap a choice tag, or press **←** / **→**. Add `?seed=1234` to the URL for a reproducible card order when reporting a bug.
+
 ## How content works
 
-1. Team authors content in the **shared spreadsheet** — one item per row.
-2. Export as CSV → save over `content/game-content.csv`.
-3. Run `pnpm run content` (also runs inside `build`/`check`).
-   - Validates every row: required fields, unique IDs, types, allowed values, ranges, references to other IDs, referenced asset files exist.
-   - Errors list the **spreadsheet row number** and the problem; nothing is written if any row is invalid.
-   - On success writes `src/data/game-content.json` (commit it). The JSON is imported and bundled with the code, so a deploy can never mix new code with stale content.
-4. Tunable numbers live in `content/balance.json` → `src/data/balance.json`.
+Content is authored by the team in the shared spreadsheet, exported as CSV, validated and converted to JSON by `pnpm run content`, and bundled with the game. **No code changes are needed to add or edit cards.**
 
-The content format is defined **once** in [`src/types/content.ts`](src/types/content.ts). To add a column: add it to the schema, add it to the CSV, run `pnpm run content`. CSV cells are strings — use the `csvInt`, `csvNumber`, `csvEnum`, `csvBool`, `optionalText` helpers in that file for non-text columns.
+1. Edit the spreadsheet — one card per row.
+2. In Excel: **File → Save As → "CSV UTF-8 (Comma delimited)"** → save over `content/game-content.csv`. (A plain "CSV (Comma delimited)" export is also accepted; the build re-decodes it and warns.)
+3. Put each card's picture in `public/assets/images/` named **`card-<ID>.png`** (or `.svg`, `.jpg`, `.webp`) — e.g. row with ID `29` → `card-29.png`. Filenames are case-sensitive.
+4. Run `pnpm run content`. Fix anything it reports (it names the spreadsheet row). It also runs inside `build` and `check`.
+5. Commit `content/game-content.csv`, the images and the generated `src/data/*.json`.
 
-Asset filenames in content must match the file on disk **exactly, including case** (CI and GitHub Pages run on Linux).
+### Columns
 
-Images/audio referenced by content go in `public/assets/images/` and `public/assets/audio/`.
+Headers are matched case- and spacing-insensitively. Extra columns (e.g. "Author") are ignored with a warning.
+
+| Column | Required | What goes in it |
+|---|---|---|
+| `ID` | yes | Any unique text/number. Also names the image file (`card-<ID>.png`). |
+| `Card type` | yes | `Start card`, `Regular draw`, `Game over card` or `End card`. Rows still saying `Card type` (the template placeholder) are skipped. |
+| `Situation text` | yes | The card text. Keep it under ~220 characters (longer text shrinks to fit; you'll get a warning). |
+| `Situation illustration` | yes | A short description of the picture — this is the prompt used to generate the art. If no `card-<ID>` image exists yet, the build fails and prints this prompt so the image can be generated. (You can also put an actual filename here.) |
+| `Swipe left text` / `Swipe right text` | regular cards | The choice labels (≤ 60 characters). Optional on other card types — defaults come from `content/balance.json → uiStrings`. |
+| `Swipe left effect` / `Swipe right effect` | regular cards | Free text such as `Team +20, deadlines -10, budget -10` or `-20 to quality, +10 to budget`. Allowed values: **0, ±10, ±20** (`balance.json → allowedEffects`). Metrics: team, quality, deadline(s), budget. Each side must change at least one metric. Phrases like "then regular draw" / "End card" are ignored. Other card types must leave these empty (or just the flow phrase). |
+| `Notes` | non-regular cards | For **Game over** cards: which metric and bound, e.g. `Team 0 card`, `Budget 100 card`. For **End** cards: the month band, e.g. `0-6 months`, `25+ months`, or `Completed all available decision cards` for the deck-exhausted ending. For **Start** cards: `first playthrough` marks the intro/tutorial card; anything else is the "new run" card. Free text on regular cards. |
+| `Trigger` | optional | If present, used instead of `Notes` for the trigger above. |
+
+Rules the build enforces: every ID unique; one or more Game over card for each of the 8 metric/bound combinations; an End card for the `0-6 months` band; at least one Start card and one Regular draw; every referenced image exists. Warnings (don't fail the build unless you run `pnpm run content --strict`): long text, unknown columns, non-UTF-8 export, too few regular cards to reach the top month band.
+
+### Balance
+
+`content/balance.json` holds every tunable number and UI string: starting metric value and bounds, allowed effect sizes, swipe threshold/rotation/deadzone, animation timings, the "danger" zone, HUD labels, header text per screen and default choice labels. The schema lives in `src/types/content.ts`.
+
+### How the run works
+
+Intro card (first load) → regular cards drawn at random, each once, one month each → a metric hits 0/100 → matching Game over card → End card for the month band → "new venture" Start card → next run. If the deck runs out first, the exhaustion End card is shown directly.
 
 ## Project layout
 
 ```
 src/
-  main.ts          boot PixiJS, load content, start scene flow
-  game/            content loading (imports src/data JSON, re-validates)
-  scenes/          Scene interface, SceneManager, Start/Game/GameOver
-  systems/         gameplay systems (scoring, …) — add as needed
+  main.ts          boot PixiJS, preload images, start the table scene
+  game/content.ts  imports src/data JSON, re-validates, groups cards by role
+  scenes/          Scene interface, SceneManager, TableScene (HUD + one card, phase machine)
+  systems/run.ts   pure rules: metrics, months, deck, game over, end bands (no Pixi/DOM)
+  ui/              CardView (drag/swipe), MetricBar, Hud, theme (mock-up palette + 1080×1920 layout)
+  types/content.ts Zod schemas, spreadsheet parsers, cross-card validation (shared by build + game + tests)
+  utils/           rng (seeded), tween, random
   data/            generated JSON (do not edit by hand)
-  ui/              Button, theme (colours/fonts)
-  types/           Zod schemas + TS types for content and balance
-  utils/           random + keyboard helpers
-public/
-  assets/          images/, audio/
+public/assets/     images/card-<ID>.* illustrations, ui/ HUD icons
 content/           game-content.csv, balance.json  ← team edits these
-scripts/           build-content.ts (CSV → validated JSON)
-docs/              spec
+scripts/           build-content.ts (CSV → validated JSON), encoding.ts
+tests/             node:test suites for rules + content parsing (run by `pnpm run test`)
+docs/              spec, original content export
 ```
 
 ## CI / deployment
 
-`.github/workflows/ci.yml` runs `pnpm run check` on every PR and push to `main`, then deploys `main` to **GitHub Pages**.
-
-Pages is configured (Source: GitHub Actions). The live URL is shown on the **Deploy to GitHub Pages** job / the `github-pages` environment in the repo (the org uses a private `*.pages.github.io` domain, so the site is served from its root — the workflow derives the correct base path automatically).
-
-## Day-of checklist
-
-- [ ] Fill in spec §1–4 and §6; agree the content row format
-- [ ] Update `src/types/content.ts` + CSV columns; `pnpm run content`
-- [ ] Replace placeholder `GameScene` with the real mechanic
-- [ ] Keep `pnpm run check` green; play-test often
-- [ ] Definition of Done in spec §6 (including play-test by another team member)
+`.github/workflows/ci.yml` runs `pnpm run check` on every PR and push to `main`, then deploys `main` to **GitHub Pages**. The workflow derives the correct base path automatically.
