@@ -34,6 +34,8 @@ test('parses every effect phrasing the team has actually used', () => {
     ['+ 10 to the team & quality - 10', { team: 10, quality: -10 }], // spaced signs, "the", ampersand
     ['Deadline +10 (then regular draw)', { deadline: 10 }],
     ['team -10 / budget +10', { team: -10, budget: 10 }],
+    ['Team + 10, budget - 10 then regular draw.', { team: 10, budget: -10 }], // v3 row 19: spaced signs, trailing full stop
+    ['+20 to team, -10 to budget then regular draw', { team: 20, budget: -10 }],
     ['End card', {}],
     ['', {}],
   ];

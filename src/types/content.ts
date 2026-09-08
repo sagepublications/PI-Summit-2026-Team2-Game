@@ -179,6 +179,7 @@ function normaliseFreeText(s: string): string {
   return s
     .replace(/[−–—]/g, '-') // minus, en dash, em dash -> hyphen
     .replace(/[()]/g, ' ') // "(then regular draw)"
+    .replace(/\.(?!\d)/g, ' ') // trailing full stops: "then regular draw."
     .replace(/([+-])\s+(?=\d)/g, '$1') // "+ 10" -> "+10"
     .replace(/\s+/g, ' ')
     .trim()
