@@ -1,125 +1,72 @@
 /**
- * Content build step: content/*.csv|json  ->  public/data/*.json
+ * Content build step: content/game-content.csv + content/balance.json  ->  src/data/*.json
  *
  * Validates everything the spec requires (required fields, unique IDs, types,
- * ranges, ID references, asset existence, non-empty text) and reports EVERY
- * problem with its spreadsheet row number, then exits non-zero so `pnpm run check`
- * and CI fail. Run with: pnpm run content
+ * permitted values, illustration files, cross-card rules) and reports EVERY
+ * problem with its spreadsheet row number, then exits non-zero so
+ * `pnpm run check` and CI fail. Warnings never fail the build unless --strict.
+ *
+ * Run with: pnpm run content [--strict]
  */
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import Papa from 'papaparse';
 import {
-  ASSET_FIELDS,
   BalanceSchema,
-  ContentItemSchema,
-  ID_REFERENCE_FIELDS,
-  type ContentItem,
+  IMAGE_EXTENSIONS,
+  illustrationCellAsFilename,
+  parseCardRow,
+  validateContentSet,
+  type Balance,
+  type Card,
 } from '../src/types/content.ts';
+import { parseCsvRows } from './csv.ts';
+import { decodeCsv } from './encoding.ts';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const CSV_PATH = resolve(ROOT, 'content/game-content.csv');
 const BALANCE_PATH = resolve(ROOT, 'content/balance.json');
+const IMAGES_DIR = resolve(ROOT, 'public/assets/images');
 // Generated JSON is imported by the game (bundled + content-hashed by Vite), so a
 // deploy can never serve new code with stale cached content or vice versa.
 const OUT_DIR = resolve(ROOT, 'src/data');
+const STRICT = process.argv.includes('--strict');
 
 const errors: string[] = [];
+const warnings: string[] = [];
+const notes: string[] = [];
 const fail = (msg: string) => errors.push(msg);
+const warn = (msg: string) => warnings.push(msg);
 
+// ------------------------------------------------------------------ helpers
 /**
- * Exact-case file listing per asset dir. `existsSync` is case-insensitive on
- * Windows/macOS but Linux (CI, GitHub Pages) is not — "Hero.png" vs "hero.png"
- * must fail here, not 404 in production.
+ * Excel's plain "CSV (Comma delimited)" export is Windows-1252, not UTF-8, so
+ * "…" and "£" arrive as bytes that are invalid UTF-8. Detect and re-decode.
  */
-const assetListings = new Map<string, Set<string>>();
-function assetExists(dir: string, file: string): boolean {
-  if (file.includes('..') || file.includes('/') || file.includes('\\')) return false;
-  let names = assetListings.get(dir);
-  if (!names) {
-    names = new Set(existsSync(resolve(ROOT, dir)) ? readdirSync(resolve(ROOT, dir)) : []);
-    assetListings.set(dir, names);
+function readCsvText(path: string): string {
+  const { text, fellBack } = decodeCsv(readFileSync(path));
+  if (fellBack) {
+    warn('game-content.csv is not UTF-8 (decoded as Windows-1252). In Excel use File → Save As → "CSV UTF-8 (Comma delimited)" to avoid mangled characters.');
   }
-  return names.has(file);
+  return text;
 }
 
-// ---------------------------------------------------------------- content CSV
-function buildContent(): ContentItem[] {
-  if (!existsSync(CSV_PATH)) {
-    fail(`Missing content file: ${CSV_PATH}`);
-    return [];
+/**
+ * Exact-case file listing. `existsSync` is case-insensitive on Windows/macOS but
+ * Linux (CI, GitHub Pages) is not — "Card-1.PNG" vs "card-1.png" must fail here.
+ */
+const imageFiles = new Set(existsSync(IMAGES_DIR) ? readdirSync(IMAGES_DIR) : []);
+function resolveIllustration(id: string, cell: string): string | null {
+  const asFile = illustrationCellAsFilename(cell);
+  if (asFile && 'file' in asFile) return imageFiles.has(asFile.file) ? asFile.file : null;
+  for (const ext of IMAGE_EXTENSIONS) {
+    const name = `card-${id}.${ext}`;
+    if (imageFiles.has(name)) return name;
   }
-
-  const csv = readFileSync(CSV_PATH, 'utf8').replace(/^﻿/, ''); // strip Excel BOM
-  const parsed = Papa.parse<Record<string, string>>(csv, {
-    header: true,
-    skipEmptyLines: 'greedy',
-    transformHeader: (h) => h.trim(),
-    transform: (v) => v.trim(),
-  });
-
-  for (const e of parsed.errors) {
-    fail(`CSV parse error at row ${e.row === undefined ? '?' : e.row + 2}: ${e.message}`);
-  }
-
-  const expected = Object.keys(ContentItemSchema.shape);
-  const actual = parsed.meta.fields ?? [];
-  for (const col of expected) {
-    if (!actual.includes(col)) fail(`CSV is missing required column "${col}"`);
-  }
-  for (const col of actual) {
-    if (!expected.includes(col)) fail(`CSV has unknown column "${col}" (add it to src/types/content.ts or remove it)`);
-  }
-
-  const items: ContentItem[] = [];
-  const seenIds = new Map<string, number>();
-
-  parsed.data.forEach((raw, i) => {
-    const row = i + 2; // 1-based, plus header line -> matches the spreadsheet row
-    const id = raw['id'] ?? '';
-    const label = `Row ${row}${id ? ` (id=${id})` : ''}`;
-
-    // These checks run on the raw values so that every problem on a row is
-    // reported in one pass, even if the row also fails schema validation.
-    if (id) {
-      const firstRow = seenIds.get(id);
-      if (firstRow !== undefined) fail(`${label}: duplicate id, first used on row ${firstRow}`);
-      else seenIds.set(id, row);
-    }
-    for (const { field, dir } of ASSET_FIELDS) {
-      const file = raw[field];
-      if (file && !assetExists(dir, file)) {
-        fail(`${label}: ${field} "${file}" not found in ${dir}/ (filename must match exactly, including case)`);
-      }
-    }
-
-    const result = ContentItemSchema.safeParse(raw);
-    if (!result.success) {
-      for (const issue of result.error.issues) {
-        fail(`${label}: ${issue.path.join('.') || '(row)'} – ${issue.message}`);
-      }
-      return;
-    }
-    items.push(result.data);
-  });
-
-  // Cross-row check: fields that reference another item's id.
-  const ids = new Set(seenIds.keys());
-  parsed.data.forEach((raw, i) => {
-    for (const field of ID_REFERENCE_FIELDS) {
-      const ref = raw[field];
-      if (ref && !ids.has(ref)) {
-        fail(`Row ${i + 2} (id=${raw['id'] ?? ''}): ${field} references unknown id "${ref}"`);
-      }
-    }
-  });
-
-  if (parsed.data.length === 0) fail('Content CSV contains no data rows');
-  return items;
+  return null;
 }
 
 // ------------------------------------------------------------------- balance
-function buildBalance(): unknown {
+function buildBalance(): Balance | undefined {
   if (!existsSync(BALANCE_PATH)) {
     fail(`Missing balance file: ${BALANCE_PATH}`);
     return undefined;
@@ -133,18 +80,66 @@ function buildBalance(): unknown {
   }
   const result = BalanceSchema.safeParse(json);
   if (!result.success) {
-    for (const issue of result.error.issues) {
-      fail(`balance.json: ${issue.path.join('.') || '(root)'} – ${issue.message}`);
-    }
+    for (const issue of result.error.issues) fail(`balance.json: ${issue.path.join('.') || '(root)'} – ${issue.message}`);
     return undefined;
   }
   return result.data;
 }
 
-// ---------------------------------------------------------------------- main
-const content = buildContent();
-const balance = buildBalance();
+// ---------------------------------------------------------------- content CSV
+function buildContent(allowedEffects: readonly number[]): Card[] {
+  if (!existsSync(CSV_PATH)) {
+    fail(`Missing content file: ${CSV_PATH}`);
+    return [];
+  }
 
+  const parsed = parseCsvRows(readCsvText(CSV_PATH));
+  errors.push(...parsed.errors);
+  warnings.push(...parsed.warnings);
+  if (errors.length > 0) return [];
+
+  const cards: Card[] = [];
+  const skippedTemplate: number[] = [];
+  for (const { row, raw } of parsed.rows) {
+    const label = `Row ${row}${raw.id ? ` (id=${raw.id})` : ''}`;
+
+    const result = parseCardRow(raw, { allowedEffects, resolveIllustration });
+    for (const w of result.warnings) warn(`${label}: ${w}`);
+    if (result.status === 'skipped') {
+      if (result.reason === 'wip') notes.push(`${label}: skipped — has text but "Card type" is not set (work in progress?)`);
+      else skippedTemplate.push(row);
+      continue;
+    }
+    if (result.status === 'error') {
+      for (const e of result.errors) fail(`${label}: ${e}`);
+      continue;
+    }
+    cards.push(result.card);
+  }
+  if (skippedTemplate.length > 0) notes.push(`${skippedTemplate.length} empty template row(s) skipped`);
+
+  const mojibake = cards.filter((c) => /Ã.|â€|�/.test(`${c.situation}${c.left.text ?? ''}${c.right.text ?? ''}`));
+  for (const c of mojibake) warn(`card "${c.id}": text contains mangled characters (Ã, â€, �) — re-export the CSV as UTF-8`);
+
+  return cards;
+}
+
+// ---------------------------------------------------------------------- main
+const balance = buildBalance();
+const cards = buildContent(balance?.allowedEffects ?? [-20, -10, 0, 10, 20]);
+if (balance && errors.length === 0) {
+  const set = validateContentSet(cards, balance);
+  errors.push(...set.errors);
+  warnings.push(...set.warnings);
+}
+
+for (const n of notes) console.log(`  · ${n}`);
+if (warnings.length > 0) {
+  console.warn(`\n⚠ ${warnings.length} warning(s):`);
+  for (const w of warnings) console.warn(`  • ${w}`);
+  console.warn('');
+  if (STRICT) fail(`--strict: ${warnings.length} warning(s) treated as errors`);
+}
 if (errors.length > 0) {
   console.error(`\n✖ Content validation failed with ${errors.length} error(s):\n`);
   for (const e of errors) console.error(`  • ${e}`);
@@ -153,6 +148,9 @@ if (errors.length > 0) {
 }
 
 mkdirSync(OUT_DIR, { recursive: true });
-writeFileSync(resolve(OUT_DIR, 'game-content.json'), JSON.stringify(content, null, 2) + '\n');
+writeFileSync(resolve(OUT_DIR, 'game-content.json'), JSON.stringify(cards, null, 2) + '\n');
 writeFileSync(resolve(OUT_DIR, 'balance.json'), JSON.stringify(balance, null, 2) + '\n');
-console.log(`✔ Content OK: ${content.length} item(s) written to src/data/`);
+const count = (t: Card['type']) => cards.filter((c) => c.type === t).length;
+console.log(
+  `✔ Content OK: ${cards.length} cards (${count('regular')} regular, ${count('start')} start, ${count('gameover')} game over, ${count('end')} end) written to src/data/`,
+);

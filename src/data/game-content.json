@@ -1,17 +1,864 @@
 [
   {
-    "id": "intro-1",
-    "title": "Welcome",
-    "text": "This is placeholder content item 1. Replace the schema and this CSV after the planning meeting."
+    "id": "1",
+    "type": "gameover",
+    "situation": "You have pushed the team too hard. They are in open revolt! They have locked you in the Hylo toilet corridor…",
+    "illustration": {
+      "file": "card-1.svg",
+      "prompt": "Person locked behind a door looking out the window of the door"
+    },
+    "left": {
+      "text": "What…",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "right": {
+      "text": "What…",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "gameover": {
+      "metric": "team",
+      "bound": 0
+    }
   },
   {
-    "id": "intro-2",
-    "title": "Second item",
-    "text": "Content items are authored one per row in the shared spreadsheet, exported as CSV, then validated into JSON."
+    "id": "2",
+    "type": "gameover",
+    "situation": "The team is thriving. Standup has become a three-hour gratitude circle. Nothing has shipped in weeks. A military product leader has been drafted for \"corrections\"...",
+    "illustration": {
+      "file": "card-2.svg",
+      "prompt": "Team members in a circle holding hands"
+    },
+    "left": {
+      "text": "What…",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "right": {
+      "text": "What…",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "gameover": {
+      "metric": "team",
+      "bound": 100
+    }
   },
   {
-    "id": "intro-3",
-    "title": "Third item",
-    "text": "Text with a comma, and \"quotes\" – the CSV parser handles Excel exports correctly."
+    "id": "3",
+    "type": "gameover",
+    "situation": "You have cut one corner too many. Enshittification is rampant. The Scholarly Kitchen has published a devasting review. HR have asked for a meeting…",
+    "illustration": {
+      "file": "card-3.svg",
+      "prompt": "Teams interface with HR calling"
+    },
+    "left": {
+      "text": "What…",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "right": {
+      "text": "What…",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "gameover": {
+      "metric": "quality",
+      "bound": 0
+    }
+  },
+  {
+    "id": "4",
+    "type": "gameover",
+    "situation": "Quality is so high the product now qualifies as a heritage site. You have been replaced by National Trust volunteers…",
+    "illustration": {
+      "file": "card-4.svg",
+      "prompt": "Old lady in national trust vest"
+    },
+    "left": {
+      "text": "What…",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "right": {
+      "text": "What…",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "gameover": {
+      "metric": "quality",
+      "bound": 100
+    }
+  },
+  {
+    "id": "5",
+    "type": "gameover",
+    "situation": "Deadlines have slipped too often. Users have grown impatient and vibe coded their own interface. It is much better…",
+    "illustration": {
+      "file": "card-5.svg",
+      "prompt": "Shiny, perfect interface"
+    },
+    "left": {
+      "text": "What…",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "right": {
+      "text": "What…",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "gameover": {
+      "metric": "deadline",
+      "bound": 0
+    }
+  },
+  {
+    "id": "6",
+    "type": "gameover",
+    "situation": "The latest release is rushed. A rogue AI agent exploits a vulnerability. The entire product is replaced by the message \"Humans? More like Poomans, lol!",
+    "illustration": {
+      "file": "card-6.svg",
+      "prompt": "AI agent lording it over humans"
+    },
+    "left": {
+      "text": "What…",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "right": {
+      "text": "What…",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "gameover": {
+      "metric": "deadline",
+      "bound": 100
+    }
+  },
+  {
+    "id": "7",
+    "type": "gameover",
+    "situation": "Costs have soared. Revenue has plummeted. People from finance are arriving. They are wearing suits. They are making excel(ent) puns…",
+    "illustration": {
+      "file": "card-7.svg",
+      "prompt": "Intimidating finance person"
+    },
+    "left": {
+      "text": "What…",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "right": {
+      "text": "What…",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "gameover": {
+      "metric": "budget",
+      "bound": 0
+    }
+  },
+  {
+    "id": "8",
+    "type": "gameover",
+    "situation": "Congratulations Ebeneezer, you have accumulated a massive product budget. Has it suddenly got cold in here? What's that sound? Chains?",
+    "illustration": {
+      "file": "card-8.svg",
+      "prompt": "Ghost in chains Wearing a santa hat to emphasise the christmas carol reference"
+    },
+    "left": {
+      "text": "What…",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "right": {
+      "text": "What…",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "gameover": {
+      "metric": "budget",
+      "bound": 100
+    }
+  },
+  {
+    "id": "9",
+    "type": "end",
+    "situation": "That was quick! Liz Truss sends you flowers.",
+    "illustration": {
+      "file": "card-9.svg",
+      "prompt": "A lettuce holding flowers."
+    },
+    "left": {
+      "text": "Lettuce have another go..",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "right": {
+      "text": "Lettuce have another go…",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "end": {
+      "minMonths": 0
+    }
+  },
+  {
+    "id": "10",
+    "type": "end",
+    "situation": "Just a couple more months and you would have learned everyone's name…",
+    "illustration": {
+      "file": "card-10.svg",
+      "prompt": "Hi, my name is' name sticker"
+    },
+    "left": {
+      "text": "I'm getting the hang of this…",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "right": {
+      "text": "I'm getting the hang of this…",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "end": {
+      "minMonths": 7
+    }
+  },
+  {
+    "id": "11",
+    "type": "end",
+    "situation": "Maybe there's a glimmer of promise somewhere deep inside you, beneath all the blunders.",
+    "illustration": {
+      "file": "card-11.svg",
+      "prompt": "A face wrapped in bandages"
+    },
+    "left": {
+      "text": "No more blunders…",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "right": {
+      "text": "No more blunders…",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "end": {
+      "minMonths": 13
+    }
+  },
+  {
+    "id": "12",
+    "type": "end",
+    "situation": "Excellent performance. You've developed a bit of a strut around the office. You are so confident you try out a wink at a colleague. You regret it.",
+    "illustration": {
+      "file": "card-12.svg",
+      "prompt": "A face winking"
+    },
+    "left": {
+      "text": "Make up for that wink…",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "right": {
+      "text": "Make up for that wink…",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "end": {
+      "minMonths": 19
+    }
+  },
+  {
+    "id": "13",
+    "type": "end",
+    "situation": "You're a product prodigy. Your linkedin is blowing up. Someone made a sculpture of you out of butter.",
+    "illustration": {
+      "file": "card-13.svg",
+      "prompt": "Butter sculpture of a human. Slightly melting."
+    },
+    "left": {
+      "text": "I'm the greatest…",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "right": {
+      "text": "I'm the greatest…",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "end": {
+      "minMonths": 25
+    }
+  },
+  {
+    "id": "14",
+    "type": "end",
+    "situation": "You have weathered every challenge. The product is thriving. Netflix headhunters call. You accept their offer. You now work from your yacht",
+    "illustration": {
+      "file": "card-14.svg",
+      "prompt": "Superyacht"
+    },
+    "left": {
+      "text": "You weep because there are no worlds left to conquer…",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "right": {
+      "text": "You weep because there are no worlds left to conquer…",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "end": {
+      "exhausted": true
+    }
+  },
+  {
+    "id": "15",
+    "type": "start",
+    "situation": "Congratulations you have taken over leadership of a new product. Every card presents a dilemma. \nSwipe left or right to decide your product's fate. Choose wisely - every decision has a cost!",
+    "illustration": {
+      "file": "card-15.svg",
+      "prompt": "Stylised cartoon of stereotypical middle manager influenced by Lumberg from office space saying \"Welcome aboard\""
+    },
+    "left": {
+      "text": "I'm pumped...",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "right": {
+      "text": "Let me at it…",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "startKind": "first"
+  },
+  {
+    "id": "16",
+    "type": "start",
+    "situation": "New product, new you. Ready to try again?",
+    "illustration": {
+      "file": "card-16.svg",
+      "prompt": "Stylised cartoon of stereotypical middle manager influenced by Lumberg from office space saying \"Umm. Yeah. I'm gonna need you to manage this new product\""
+    },
+    "left": {
+      "text": "I can do better…",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "right": {
+      "text": "Last time wasn't fair…",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "startKind": "again"
+  },
+  {
+    "id": "17",
+    "type": "regular",
+    "situation": "You discover the team have created a secret sleep cupboard and have a rota for using it.",
+    "illustration": {
+      "file": "card-17.svg",
+      "prompt": "Sleep cupboard"
+    },
+    "left": {
+      "text": "Take over the sleep cupboard. You deserve it more.",
+      "effects": {
+        "team": -20,
+        "quality": 0,
+        "deadline": 10,
+        "budget": 10
+      }
+    },
+    "right": {
+      "text": "Everyone needs a break. Head to Margate.",
+      "effects": {
+        "team": 20,
+        "quality": 0,
+        "deadline": -10,
+        "budget": -10
+      }
+    }
+  },
+  {
+    "id": "23",
+    "type": "regular",
+    "situation": "Onetrust's latest release pops up a reminder of cookie status for every user every 5 seconds.",
+    "illustration": {
+      "file": "card-23.svg",
+      "prompt": "A giant cookie in a pop up"
+    },
+    "left": {
+      "text": "It takes less than 5 seconds to hit the download button.",
+      "effects": {
+        "team": 0,
+        "quality": -20,
+        "deadline": 0,
+        "budget": 0
+      }
+    },
+    "right": {
+      "text": "Get on the phone to onetrust. Again.",
+      "effects": {
+        "team": 0,
+        "quality": 10,
+        "deadline": -10,
+        "budget": 0
+      }
+    }
+  },
+  {
+    "id": "29",
+    "type": "regular",
+    "situation": "A hippo escaped from Los Angeles zoo and taken up residence in the Sage data center. The police have cut the power to tempt it out.",
+    "illustration": {
+      "file": "card-29.svg",
+      "prompt": "Head of a hippo facing the camera, mouth open"
+    },
+    "left": {
+      "text": "Wait for the hippo to leave",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": -10,
+        "budget": 10
+      }
+    },
+    "right": {
+      "text": "Call Fabio, the hippo wrangler",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 10,
+        "budget": -20
+      }
+    }
+  },
+  {
+    "id": "35",
+    "type": "regular",
+    "situation": "The CEO's spiritual guru tells them that green is unlucky. A green purge is declared.",
+    "illustration": {
+      "file": "card-35.svg",
+      "prompt": "A crystal ball with an ominous green cloud in the middle"
+    },
+    "left": {
+      "text": "Hire a rival spirtual guru to defend green",
+      "effects": {
+        "team": 0,
+        "quality": 10,
+        "deadline": 0,
+        "budget": -20
+      }
+    },
+    "right": {
+      "text": "All green must go",
+      "effects": {
+        "team": 0,
+        "quality": -10,
+        "deadline": -10,
+        "budget": 0
+      }
+    }
+  },
+  {
+    "id": "51",
+    "type": "regular",
+    "situation": "The CEO returns from a conference with 'AI' tattooed on their forehead. Everything must be AI by Friday.",
+    "illustration": {
+      "file": "card-51.svg",
+      "prompt": "A forehead with the letters AI tattooed on it"
+    },
+    "left": {
+      "text": "Rename the search box 'AI Search'",
+      "effects": {
+        "team": 0,
+        "quality": -10,
+        "deadline": 10,
+        "budget": 0
+      }
+    },
+    "right": {
+      "text": "Build an actual model",
+      "effects": {
+        "team": 10,
+        "quality": 0,
+        "deadline": -10,
+        "budget": -20
+      }
+    }
+  },
+  {
+    "id": "52",
+    "type": "regular",
+    "situation": "A user has found the button that deletes everything. They have pressed it. Twice.",
+    "illustration": {
+      "file": "card-52.svg",
+      "prompt": "A large red button with a bite taken out of it"
+    },
+    "left": {
+      "text": "Restore the backup and say nothing",
+      "effects": {
+        "team": 0,
+        "quality": -10,
+        "deadline": 0,
+        "budget": -10
+      }
+    },
+    "right": {
+      "text": "Publish a heartfelt post-mortem",
+      "effects": {
+        "team": -10,
+        "quality": 10,
+        "deadline": -10,
+        "budget": 0
+      }
+    }
+  },
+  {
+    "id": "53",
+    "type": "regular",
+    "situation": "Legal insists every screen carries a 400-word disclaimer. In Latin.",
+    "illustration": {
+      "file": "card-53.svg",
+      "prompt": "A parchment scroll covered in tiny Latin text"
+    },
+    "left": {
+      "text": "Comply. Users love Latin.",
+      "effects": {
+        "team": 0,
+        "quality": -20,
+        "deadline": 10,
+        "budget": 0
+      }
+    },
+    "right": {
+      "text": "Hide it behind a tiny (i) icon",
+      "effects": {
+        "team": 0,
+        "quality": 10,
+        "deadline": 0,
+        "budget": -10
+      }
+    }
+  },
+  {
+    "id": "54",
+    "type": "regular",
+    "situation": "Design has rebranded. Again. The logo is now a single beige dot.",
+    "illustration": {
+      "file": "card-54.svg",
+      "prompt": "A single beige dot on a dark canvas, framed in gold"
+    },
+    "left": {
+      "text": "Ship the dot",
+      "effects": {
+        "team": 10,
+        "quality": -10,
+        "deadline": 10,
+        "budget": 0
+      }
+    },
+    "right": {
+      "text": "Demand the old logo back",
+      "effects": {
+        "team": -20,
+        "quality": 0,
+        "deadline": -10,
+        "budget": 0
+      }
+    }
+  },
+  {
+    "id": "55",
+    "type": "regular",
+    "situation": "An intern has replaced the entire test suite with one test called 'works'. It passes.",
+    "illustration": {
+      "file": "card-55.svg",
+      "prompt": "A green tick wearing a party hat"
+    },
+    "left": {
+      "text": "Merge it. Green is green.",
+      "effects": {
+        "team": 0,
+        "quality": -20,
+        "deadline": 20,
+        "budget": 0
+      }
+    },
+    "right": {
+      "text": "Rewrite the tests over a long weekend",
+      "effects": {
+        "team": -10,
+        "quality": 10,
+        "deadline": -10,
+        "budget": 0
+      }
+    }
+  },
+  {
+    "id": "56",
+    "type": "regular",
+    "situation": "Sales have sold a feature that does not exist to a customer that does not exist yet.",
+    "illustration": {
+      "file": "card-56.svg",
+      "prompt": "A handshake where one of the hands is transparent"
+    },
+    "left": {
+      "text": "Build it before the contract arrives",
+      "effects": {
+        "team": -10,
+        "quality": 0,
+        "deadline": -20,
+        "budget": 10
+      }
+    },
+    "right": {
+      "text": "Explain the word 'roadmap' to Sales",
+      "effects": {
+        "team": 10,
+        "quality": 0,
+        "deadline": 0,
+        "budget": -10
+      }
+    }
+  },
+  {
+    "id": "57",
+    "type": "regular",
+    "situation": "Your best engineer has been headhunted by a startup that sells subscription air.",
+    "illustration": {
+      "file": "card-57.svg",
+      "prompt": "A glass jar labelled AIR with a price tag"
+    },
+    "left": {
+      "text": "Counter-offer with a bigger monitor",
+      "effects": {
+        "team": 10,
+        "quality": 0,
+        "deadline": 0,
+        "budget": -20
+      }
+    },
+    "right": {
+      "text": "Wish them well and inherit their 47 side projects",
+      "effects": {
+        "team": -20,
+        "quality": 0,
+        "deadline": -10,
+        "budget": 0
+      }
+    }
+  },
+  {
+    "id": "58",
+    "type": "regular",
+    "situation": "Marketing has put the launch date on a billboard. You have not agreed a launch date.",
+    "illustration": {
+      "file": "card-58.svg",
+      "prompt": "A billboard showing a giant calendar page"
+    },
+    "left": {
+      "text": "Work weekends until the billboard is true",
+      "effects": {
+        "team": -20,
+        "quality": 0,
+        "deadline": 20,
+        "budget": 0
+      }
+    },
+    "right": {
+      "text": "Hire a crane and paint over the date",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": -10,
+        "budget": -20
+      }
+    }
+  },
+  {
+    "id": "59",
+    "type": "regular",
+    "situation": "Finance has discovered the coffee machine costs more per month than the database.",
+    "illustration": {
+      "file": "card-59.svg",
+      "prompt": "A coffee cup wearing a small gold crown"
+    },
+    "left": {
+      "text": "Remove the coffee machine",
+      "effects": {
+        "team": -20,
+        "quality": 0,
+        "deadline": 0,
+        "budget": 20
+      }
+    },
+    "right": {
+      "text": "Downgrade the database instead",
+      "effects": {
+        "team": 0,
+        "quality": -20,
+        "deadline": 0,
+        "budget": 10
+      }
+    }
+  },
+  {
+    "id": "60",
+    "type": "regular",
+    "situation": "A competitor has launched an identical product with a nicer font.",
+    "illustration": {
+      "file": "card-60.svg",
+      "prompt": "Two identical boxes, one wearing a bow tie"
+    },
+    "left": {
+      "text": "Copy the font",
+      "effects": {
+        "team": 0,
+        "quality": 10,
+        "deadline": 0,
+        "budget": -10
+      }
+    },
+    "right": {
+      "text": "Declare fonts a distraction and ship features",
+      "effects": {
+        "team": 0,
+        "quality": -10,
+        "deadline": 10,
+        "budget": 0
+      }
+    }
   }
 ]

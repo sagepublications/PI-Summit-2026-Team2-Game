@@ -15,5 +15,5 @@
     "skipLibCheck": true,
     "noEmit": true
   },
-  "include": ["scripts", "vite.config.ts", "src/types"]
+  "include": ["scripts", "tests", "vite.config.ts", "src/types", "src/systems", "src/utils/random.ts", "src/utils/rng.ts"]
 }

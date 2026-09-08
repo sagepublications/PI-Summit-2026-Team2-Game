@@ -1,4 +1,58 @@
 {
-  "itemsPerRun": 3,
-  "pointsPerItem": 10
+  "metrics": {
+    "start": 50,
+    "min": 0,
+    "max": 100
+  },
+  "allowedEffects": [
+    -20,
+    -10,
+    0,
+    10,
+    20
+  ],
+  "swipe": {
+    "thresholdFraction": 0.28,
+    "maxRotationDeg": 14,
+    "deadzonePx": 24
+  },
+  "anim": {
+    "flyOffMs": 320,
+    "snapBackMs": 220,
+    "dealInMs": 280,
+    "barTweenMs": 450
+  },
+  "dangerWithin": 20,
+  "uiStrings": {
+    "intro": {
+      "left": "Swipe left",
+      "right": "Swipe right",
+      "header": "LEARN THE ROPES"
+    },
+    "start": {
+      "left": "Begin",
+      "right": "Begin",
+      "header": "A NEW VENTURE"
+    },
+    "gameover": {
+      "left": "Try again",
+      "right": "Try again",
+      "header": "GAME OVER"
+    },
+    "end": {
+      "left": "Play again",
+      "right": "Play again",
+      "header": "SUCCESS"
+    },
+    "metricLabels": {
+      "team": "TEAM",
+      "quality": "QUALITY",
+      "deadline": "DEADLINE",
+      "budget": "BUDGET"
+    },
+    "month": "MONTH",
+    "months": "MONTHS",
+    "loading": "Dealing the cards…",
+    "rotateDevice": "Rotate your device to play"
+  }
 }

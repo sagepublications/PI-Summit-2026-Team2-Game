@@ -12,8 +12,9 @@
     "build": "pnpm run content && vite build",
     "preview": "vite preview",
     "content": "tsx scripts/build-content.ts",
+    "test": "node --import tsx --test",
     "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json",
-    "check": "pnpm run content && pnpm run typecheck && vite build"
+    "check": "pnpm run content && pnpm run test && pnpm run typecheck && vite build"
   },
   "dependencies": {
     "pixi.js": "^8.20.1"
