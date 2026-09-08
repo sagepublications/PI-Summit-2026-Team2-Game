@@ -20,7 +20,8 @@
     "flyOffMs": 320,
     "snapBackMs": 220,
     "dealInMs": 280,
-    "barTweenMs": 450
+    "barTweenMs": 450,
+    "deltaFloatMs": 1100
   },
   "dangerWithin": 20,
   "audio": {

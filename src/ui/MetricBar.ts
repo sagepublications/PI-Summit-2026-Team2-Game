@@ -16,6 +16,9 @@ export class MetricBar extends Container {
   private readonly fill = new Graphics();
   private readonly dot = new Graphics();
   private readonly labelText: Text;
+  /** Signed change shown after a swipe lands (never during the preview). */
+  private readonly deltaText: Text;
+  private deltaTween: Tween | null = null;
 
   private value: number;
   private shown: number; // animated display value
@@ -56,8 +59,34 @@ export class MetricBar extends Container {
     this.labelText.anchor.set(0.5, 0);
     this.labelText.position.set(barWidth / 2, barY + barHeight + 12);
 
-    this.addChild(this.icon, this.track, this.fill, this.dot, this.labelText);
+    this.deltaText = new Text({
+      text: '',
+      style: { fontFamily: theme.font.family, fontSize: theme.font.delta, fill: theme.colors.gain, fontWeight: '700' },
+    });
+    this.deltaText.anchor.set(0.5, 1);
+    this.deltaText.visible = false;
+
+    this.addChild(this.icon, this.track, this.fill, this.dot, this.labelText, this.deltaText);
     this.redraw();
+  }
+
+  /** "+20" / "−10" rising from the bar and fading out, once the change has landed. */
+  private showDelta(delta: number): void {
+    const { barWidth, iconSize } = theme.layout.hud;
+    this.deltaTween?.cancel();
+    this.deltaText.text = `${delta > 0 ? '+' : '−'}${Math.abs(delta)}`;
+    this.deltaText.style.fill = delta > 0 ? theme.colors.gain : theme.colors.danger;
+    this.deltaText.visible = true;
+    const startY = iconSize + 10;
+    this.deltaText.position.set(barWidth / 2, startY);
+    this.deltaText.alpha = 1;
+    this.deltaTween = this.tweener.to(this.balance.anim.deltaFloatMs, (t) => {
+      this.deltaText.position.y = startY - 60 * t;
+      this.deltaText.alpha = t < 0.5 ? 1 : 1 - (t - 0.5) * 2;
+    });
+    void this.deltaTween.then(() => {
+      if (this.deltaText.alpha <= 0.01) this.deltaText.visible = false;
+    });
   }
 
   private inDanger(v: number): boolean {
@@ -95,6 +124,8 @@ export class MetricBar extends Container {
   /** Jump to a value with no animation (run reset). */
   reset(value: number): void {
     this.tween?.cancel();
+    this.deltaTween?.cancel();
+    this.deltaText.visible = false;
     this.value = this.shown = value;
     this.failed = false;
     this.flash = 0;
@@ -114,6 +145,7 @@ export class MetricBar extends Container {
       return;
     }
     const ms = this.balance.anim.barTweenMs;
+    this.showDelta(delta);
     this.tween?.cancel();
     this.tween = this.tweener.to(ms, (t) => {
       this.shown = lerp(from, value, t);

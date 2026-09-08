@@ -38,7 +38,8 @@ export const theme = {
     barFill: TEAL,
     previewDot: WHITE, // one colour: size shows magnitude, never direction
     flash: WHITE,
-    danger: 0xe5484d,
+    gain: TEAL, // "+20" shown after a swipe lands
+    danger: 0xe5484d, // also "−10" after a swipe lands
   },
   font: {
     /** Sage Peak is loaded in src/style.css and awaited in main.ts before any text is drawn. */
@@ -50,6 +51,7 @@ export const theme = {
     choiceMin: 24,
     label: 24,
     header: 34,
+    delta: 30,
   },
   layout: {
     margin: 60,

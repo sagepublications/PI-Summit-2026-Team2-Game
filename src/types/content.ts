@@ -95,7 +95,7 @@ export const BalanceSchema = z.object({
     /** Drag distance (design px) before the preview appears. */
     deadzonePx: z.number().min(0).max(500),
   }),
-  anim: z.object({ flyOffMs: ms, snapBackMs: ms, dealInMs: ms, barTweenMs: ms }),
+  anim: z.object({ flyOffMs: ms, snapBackMs: ms, dealInMs: ms, barTweenMs: ms, deltaFloatMs: ms }),
   /** A metric within this distance of a bound is drawn in the danger colour. */
   dangerWithin: z.number().int().min(0).max(100),
   /** Starting volumes (0–1; players adjust with the sliders) and the music file in public/assets/audio/. */
