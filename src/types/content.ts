@@ -188,6 +188,7 @@ function normaliseFreeText(s: string): string {
 export interface EffectsParse {
   effects: Effects;
   errors: string[];
+  warnings: string[];
 }
 
 /**
@@ -199,8 +200,15 @@ export interface EffectsParse {
 export function parseEffects(cell: string, allowedEffects: readonly number[]): EffectsParse {
   const effects: Effects = { ...ZERO_EFFECTS };
   const errors: string[] = [];
-  const text = normaliseFreeText(cell);
-  if (text === '') return { effects, errors };
+  const warnings: string[] = [];
+  let text = normaliseFreeText(cell);
+  // Excel's plain CSV export turns a Unicode minus (U+2212) into "?", so "?20" is
+  // an author's "−20". Read it as minus but tell them to use a plain hyphen.
+  if (/\?\s*(?=\d)/.test(text)) {
+    warnings.push(`"${cell.trim()}": "?" before a number was read as a minus sign (the export lost a special minus character — type a plain hyphen instead)`);
+    text = text.replace(/\?\s*(?=\d)/g, '-');
+  }
+  if (text === '') return { effects, errors, warnings };
 
   const seen = new Set<Metric>();
   const fragments = text.split(/\s*(?:,|;|&|\/|\bthen\b|\band\b)\s*/).filter((f) => f !== '');
@@ -228,7 +236,7 @@ export function parseEffects(cell: string, allowedEffects: readonly number[]): E
     }
     effects[metric] = value;
   }
-  return { effects, errors };
+  return { effects, errors, warnings };
 }
 
 export type Trigger =
@@ -278,9 +286,15 @@ export interface RowParseOptions {
   maxChoiceLength?: number;
 }
 
+/**
+ * skipped reasons:
+ *  - template:   nothing filled in (a spreadsheet placeholder row)
+ *  - wip:        has text but no Card type yet
+ *  - incomplete: a Regular draw whose situation or a whole choice side is still blank
+ */
 export type RowParseResult =
   | { status: 'ok'; card: Card; warnings: string[] }
-  | { status: 'skipped'; reason: 'template' | 'wip'; warnings: string[] }
+  | { status: 'skipped'; reason: 'template' | 'wip' | 'incomplete'; warnings: string[] }
   | { status: 'error'; errors: string[]; warnings: string[] };
 
 /** Does the illustration cell look like a filename rather than a prompt? */
@@ -298,8 +312,8 @@ export function parseCardRow(raw: RawRow, opts: RowParseOptions): RowParseResult
   const cell = (k: ColumnKey): string => (raw[k] ?? '').trim();
 
   const typeWord = normaliseFreeText(cell('type'));
+  const hasContent = (['situation', 'illustration', 'leftText', 'rightText', 'leftEffect', 'rightEffect'] as const).some((k) => cell(k) !== '');
   if (typeWord === '' || typeWord === 'card type') {
-    const hasContent = ['situation', 'leftText', 'rightText', 'leftEffect', 'rightEffect'].some((k) => cell(k as ColumnKey) !== '');
     return { status: 'skipped', reason: hasContent ? 'wip' : 'template', warnings };
   }
   const type = CARD_TYPE_WORDS[typeWord];
@@ -310,6 +324,8 @@ export function parseCardRow(raw: RawRow, opts: RowParseOptions): RowParseResult
       warnings,
     };
   }
+  // A typed row with nothing else filled in is still just a placeholder.
+  if (!hasContent) return { status: 'skipped', reason: 'template', warnings };
 
   const id = cell('id');
   if (id === '') errors.push('ID must not be empty');
@@ -345,6 +361,7 @@ export function parseCardRow(raw: RawRow, opts: RowParseOptions): RowParseResult
   const left = parseEffects(cell('leftEffect'), opts.allowedEffects);
   const right = parseEffects(cell('rightEffect'), opts.allowedEffects);
   errors.push(...left.errors.map((e) => `Swipe left effect: ${e}`), ...right.errors.map((e) => `Swipe right effect: ${e}`));
+  warnings.push(...left.warnings.map((w) => `Swipe left effect: ${w}`), ...right.warnings.map((w) => `Swipe right effect: ${w}`));
 
   const leftText = cell('leftText');
   const rightText = cell('rightText');
@@ -359,6 +376,12 @@ export function parseCardRow(raw: RawRow, opts: RowParseOptions): RowParseResult
   let startKind: Card['startKind'];
 
   if (type === 'regular') {
+    // Still being written: a side with neither text nor effect, or no situation yet.
+    // Skip with a note rather than fail the whole build on someone's half-typed row.
+    const sideBlank = (text: string, effect: string) => text === '' && normaliseFreeText(effect) === '';
+    if (situation === '' || sideBlank(leftText, cell('leftEffect')) || sideBlank(rightText, cell('rightEffect'))) {
+      return { status: 'skipped', reason: 'incomplete', warnings };
+    }
     if (leftText === '') errors.push('Swipe left text is required on a Regular draw card');
     if (rightText === '') errors.push('Swipe right text is required on a Regular draw card');
     if (left.errors.length === 0 && isZero(left.effects)) errors.push('Swipe left effect must change at least one metric');

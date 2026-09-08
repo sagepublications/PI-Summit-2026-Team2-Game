@@ -107,6 +107,7 @@ function buildContent(allowedEffects: readonly number[]): Card[] {
     for (const w of result.warnings) warn(`${label}: ${w}`);
     if (result.status === 'skipped') {
       if (result.reason === 'wip') notes.push(`${label}: skipped — has text but "Card type" is not set (work in progress?)`);
+      else if (result.reason === 'incomplete') notes.push(`${label}: skipped — Regular draw is missing its situation or a whole choice side (work in progress?)`);
       else skippedTemplate.push(row);
       continue;
     }

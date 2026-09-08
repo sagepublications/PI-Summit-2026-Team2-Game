@@ -44,8 +44,16 @@ test('parses every effect phrasing the team has actually used', () => {
   }
 });
 
+test('a "?" where Excel lost a Unicode minus is read as minus, with a warning', () => {
+  const r = parseEffects('Quality +20, Deadlines ?20, Budget ?10', allowed);
+  assert.deepEqual(r.errors, []);
+  assert.deepEqual(r.effects, { team: 0, quality: 20, deadline: -20, budget: -10 });
+  assert.match(r.warnings[0]!, /read as a minus sign/);
+  assert.deepEqual(parseEffects('team +10', allowed).warnings, []);
+});
+
 test('rejects effect fragments it cannot understand, disallowed values and duplicate metrics', () => {
-  assert.match(parseEffects('Budget +20, Deadlines ?20', allowed).errors[0]!, /unrecognised effect "deadlines \?20"/);
+  assert.match(parseEffects('Budget +20, Deadlines ??', allowed).errors[0]!, /unrecognised effect "deadlines \?\?"/);
   assert.match(parseEffects('team +15', allowed).errors[0]!, /not allowed/);
   assert.match(parseEffects('team +10, team -10', allowed).errors[0]!, /appears twice/);
   assert.match(parseEffects('morale +10', allowed).errors[0]!, /unrecognised effect/);
@@ -116,13 +124,29 @@ test('template rows are skipped silently; rows with text but no type are flagged
 
 test('regular rows need both choice texts and a non-zero effect on each side', () => {
   const r = parseCardRow(
-    { ...regularRow, rightText: '', rightEffect: 'then regular draw' },
+    { ...regularRow, rightText: 'Do nothing', rightEffect: 'then regular draw' },
     { allowedEffects: allowed, resolveIllustration: withImages },
   );
   assert.equal(r.status, 'error');
   if (r.status !== 'error') return;
-  assert.ok(r.errors.some((e) => /Swipe right text is required/.test(e)));
   assert.ok(r.errors.some((e) => /Swipe right effect must change at least one metric/.test(e)));
+  const noText = parseCardRow({ ...regularRow, rightText: '' }, { allowedEffects: allowed, resolveIllustration: withImages });
+  assert.equal(noText.status, 'error');
+  if (noText.status === 'error') assert.ok(noText.errors.some((e) => /Swipe right text is required/.test(e)));
+});
+
+test('half-written regular rows are skipped as incomplete, and a typed row with nothing else is a template', () => {
+  // Row 25 in content-v2: left text only, right side blank, no image yet.
+  const halfDone = parseCardRow(
+    { ...regularRow, id: '25', leftEffect: '', rightText: '', rightEffect: '' },
+    { allowedEffects: allowed, resolveIllustration: noImages },
+  );
+  assert.deepEqual(halfDone, { status: 'skipped', reason: 'incomplete', warnings: [] });
+  const noSituation = parseCardRow({ ...regularRow, situation: '' }, { allowedEffects: allowed, resolveIllustration: withImages });
+  assert.equal(noSituation.status, 'skipped');
+  // Row 18 in content-v2: "Regular draw" chosen, everything else empty.
+  const typedOnly = parseCardRow({ id: '18', type: 'Regular draw', notes: 'Team' }, { allowedEffects: allowed, resolveIllustration: noImages });
+  assert.deepEqual(typedOnly, { status: 'skipped', reason: 'template', warnings: [] });
 });
 
 test('game over rows take their trigger from Notes (or a Trigger column) and may not change metrics', () => {

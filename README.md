@@ -34,11 +34,11 @@ Headers are matched case- and spacing-insensitively. Extra columns (e.g. "Author
 | Column | Required | What goes in it |
 |---|---|---|
 | `ID` | yes | Any unique text/number. Also names the image file (`card-<ID>.png`). |
-| `Card type` | yes | `Start card`, `Regular draw`, `Game over card` or `End card`. Rows still saying `Card type` (the template placeholder) are skipped. |
+| `Card type` | yes | `Start card`, `Regular draw`, `Game over card` or `End card`. Rows still saying `Card type` (the template placeholder), typed rows with nothing else filled in, and Regular draws with a blank situation or a whole blank choice side are skipped with a note so half-written rows don't break the build. |
 | `Situation text` | yes | The card text. Keep it under ~220 characters (longer text shrinks to fit; you'll get a warning). |
 | `Situation illustration` | yes | A short description of the picture — this is the prompt used to generate the art. If no `card-<ID>` image exists yet, the build fails and prints this prompt so the image can be generated. (You can also put an actual filename here.) |
 | `Swipe left text` / `Swipe right text` | regular cards | The choice labels (≤ 60 characters). Optional on other card types — defaults come from `content/balance.json → uiStrings`. |
-| `Swipe left effect` / `Swipe right effect` | regular cards | Free text such as `Team +20, deadlines -10, budget -10` or `-20 to quality, +10 to budget`. Allowed values: **0, ±10, ±20** (`balance.json → allowedEffects`). Metrics: team, quality, deadline(s), budget. Each side must change at least one metric. Phrases like "then regular draw" / "End card" are ignored. Other card types must leave these empty (or just the flow phrase). |
+| `Swipe left effect` / `Swipe right effect` | regular cards | Free text such as `Team +20, deadlines -10, budget -10` or `-20 to quality, +10 to budget`. Allowed values: **0, ±10, ±20** (`balance.json → allowedEffects`). Metrics: team, quality, deadline(s), budget. Each side must change at least one metric. Phrases like "then regular draw" / "End card" are ignored. Other card types must leave these empty (or just the flow phrase). Type minus as a plain hyphen: Excel exports a typographic minus as `?`, which the build reads as minus but warns about. |
 | `Notes` | non-regular cards | For **Game over** cards: which metric and bound, e.g. `Team 0 card`, `Budget 100 card`. For **End** cards: the month band, e.g. `0-6 months`, `25+ months`, or `Completed all available decision cards` for the deck-exhausted ending. For **Start** cards: `first playthrough` marks the intro/tutorial card; anything else is the "new run" card. Free text on regular cards. |
 | `Trigger` | optional | If present, used instead of `Notes` for the trigger above. |
 

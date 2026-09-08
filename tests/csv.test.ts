@@ -32,7 +32,7 @@ test("the team's real export parses: headers map, trailing empty column ignored,
 
 test("every finished row in the team's export parses into a card (given an image), and the counts are right", () => {
   const parsed = parseCsvRows(teamExport().text);
-  const outcome = { ok: 0, template: 0, wip: 0, error: [] as string[] };
+  const outcome = { ok: 0, template: 0, wip: 0, incomplete: 0, error: [] as string[] };
   for (const { row, raw } of parsed.rows) {
     const r = parseCardRow(raw, { allowedEffects: balance.allowedEffects, resolveIllustration: (id) => `card-${id}.svg` });
     if (r.status === 'ok') outcome.ok++;
@@ -43,6 +43,27 @@ test("every finished row in the team's export parses into a card (given an image
   assert.equal(outcome.ok, 20); // 8 game over + 6 end + 2 start + 4 regular
   assert.equal(outcome.wip, 1);
   assert.equal(outcome.template, 29);
+});
+
+test("the v2 export: 28 finished cards, one half-written row skipped, lost minus signs warned about", () => {
+  const { text } = decodeCsv(readFileSync(resolve(import.meta.dirname, '../docs/content-v2.csv')));
+  const parsed = parseCsvRows(text);
+  assert.deepEqual(parsed.errors, []);
+  const outcome = { ok: 0, template: 0, wip: 0, incomplete: [] as number[], error: [] as string[], minusWarnings: 0 };
+  for (const { row, raw } of parsed.rows) {
+    const r = parseCardRow(raw, { allowedEffects: balance.allowedEffects, resolveIllustration: (id) => `card-${id}.svg` });
+    outcome.minusWarnings += r.warnings.filter((w) => /minus sign/.test(w)).length;
+    if (r.status === 'ok') outcome.ok++;
+    else if (r.status === 'skipped' && r.reason === 'incomplete') outcome.incomplete.push(row);
+    else if (r.status === 'skipped') outcome[r.reason]++;
+    else outcome.error.push(`row ${row}: ${r.errors.join('; ')}`);
+  }
+  assert.deepEqual(outcome.error, []);
+  assert.equal(outcome.ok, 28); // 8 game over + 6 end + 2 start + 12 regular
+  assert.deepEqual(outcome.incomplete, [26]); // id=25 (spreadsheet row 26): right-hand side not written yet
+  assert.equal(outcome.template, 21); // 20 placeholder rows + row 18 (typed but empty)
+  assert.equal(outcome.wip, 0);
+  assert.ok(outcome.minusWarnings >= 10);
 });
 
 test('a blank Excel row (",,,,,,,,,") keeps later row numbers aligned and is treated as a template row', () => {
