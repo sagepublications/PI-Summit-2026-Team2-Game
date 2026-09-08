@@ -51,14 +51,14 @@ export class TableScene implements Scene {
       .fill(theme.colors.frame)
       .stroke({ width: 3, color: theme.colors.frameEdge });
     for (const [x, y] of [[40, 40], [DESIGN.width - 40, 40], [40, DESIGN.height - 40], [DESIGN.width - 40, DESIGN.height - 40]]) {
-      frame.poly([x!, y! - 12, x! + 12, y!, x!, y! + 12, x! - 12, y!]).fill(theme.colors.gold);
+      frame.poly([x!, y! - 12, x! + 12, y!, x!, y! + 12, x! - 12, y!]).fill(theme.colors.accent);
     }
     this.hud = new Hud(data.balance, assets.icons, this.tweener);
     this.root.addChild(frame, this.hud);
 
     this.rotateOverlay = new Text({
       text: data.balance.uiStrings.rotateDevice,
-      style: { fontFamily: theme.font.family, fontSize: 22, fill: theme.colors.gold, align: 'center', wordWrap: true, wordWrapWidth: 320 },
+      style: { fontFamily: theme.font.family, fontSize: 22, fill: theme.colors.hudLabel, align: 'center', wordWrap: true, wordWrapWidth: 320 },
     });
     this.rotateOverlay.anchor.set(0.5);
     this.rotateOverlay.visible = false;
@@ -153,6 +153,7 @@ export class TableScene implements Scene {
     const months = this.run?.months ?? this.lastMonths;
     const header = this.headerFor(phase, months);
     this.hud.setHeader(header.text, header.danger);
+    this.hud.showTitle(phase === 'intro' || phase === 'start');
 
     const ui = this.data.balance.uiStrings;
     const fallback = phase === 'playing' ? null : ui[phase];

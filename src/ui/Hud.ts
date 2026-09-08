@@ -9,6 +9,7 @@ import type { Tweener } from '../utils/tween';
 export class Hud extends Container {
   private readonly bars: Record<Metric, MetricBar>;
   private readonly headerText: Text;
+  private readonly titleText: Text;
   private readonly rules = new Graphics();
 
   constructor(balance: Balance, icons: Partial<Record<Metric, Texture>>, tweener: Tweener) {
@@ -27,16 +28,30 @@ export class Hud extends Container {
 
     this.headerText = new Text({
       text: '',
-      style: { fontFamily: theme.font.family, fontSize: theme.font.header, fill: theme.colors.gold, letterSpacing: 6, fontWeight: 'bold' },
+      style: { fontFamily: theme.font.family, fontSize: theme.font.header, fill: theme.colors.accent, letterSpacing: 6, fontWeight: 'bold' },
     });
     this.headerText.anchor.set(0.5);
     this.headerText.position.set(DESIGN.width / 2, theme.layout.header.y);
-    this.addChild(this.rules, this.headerText);
+
+    this.titleText = new Text({
+      text: balance.uiStrings.title,
+      style: { fontFamily: theme.font.family, fontSize: theme.font.title, fill: theme.colors.hudLabel, fontWeight: 'bold', letterSpacing: 2 },
+    });
+    this.titleText.anchor.set(0.5);
+    this.titleText.position.set(DESIGN.width / 2, theme.layout.title.y);
+    this.titleText.visible = false;
+
+    this.addChild(this.rules, this.headerText, this.titleText);
+  }
+
+  /** The game title is shown on the intro and start screens only. */
+  showTitle(visible: boolean): void {
+    this.titleText.visible = visible;
   }
 
   setHeader(text: string, danger = false): void {
     this.headerText.text = text;
-    const color = danger ? theme.colors.bad : theme.colors.gold;
+    const color = danger ? theme.colors.danger : theme.colors.accent;
     this.headerText.style.fill = color;
     const y = theme.layout.header.y;
     const gap = this.headerText.width / 2 + 28;
@@ -47,7 +62,7 @@ export class Hud extends Container {
       .lineTo(DESIGN.width / 2 - gap, y)
       .moveTo(DESIGN.width / 2 + gap, y)
       .lineTo(DESIGN.width - margin, y)
-      .stroke({ width: 2, color: danger ? theme.colors.bad : theme.colors.goldDim });
+      .stroke({ width: 2, color: danger ? theme.colors.danger : theme.colors.accent, alpha: danger ? 1 : 0.6 });
   }
 
   reset(metrics: Metrics): void {

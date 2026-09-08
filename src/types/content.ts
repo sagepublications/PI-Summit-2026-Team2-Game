@@ -99,6 +99,8 @@ export const BalanceSchema = z.object({
   /** A metric within this distance of a bound is drawn in the danger colour. */
   dangerWithin: z.number().int().min(0).max(100),
   uiStrings: z.object({
+    /** Game title, shown on the intro and start screens. */
+    title: label,
     intro: screenStrings,
     start: screenStrings,
     gameover: screenStrings,

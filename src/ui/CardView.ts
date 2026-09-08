@@ -69,7 +69,7 @@ export class CardView extends Container {
       style: {
         fontFamily: theme.font.family,
         fontSize: theme.font.situation,
-        fill: theme.colors.parchment,
+        fill: theme.colors.boxText,
         align: 'center',
         wordWrap: true,
         wordWrapWidth: boxWidth - textBox.padding * 2,
@@ -84,7 +84,7 @@ export class CardView extends Container {
     }
     const boxHeight = Math.max(textBox.minHeight, situation.height + textBox.padding * 2);
     const box = new Container();
-    box.addChild(new Graphics().rect(-boxWidth / 2, -boxHeight / 2, boxWidth, boxHeight).fill(theme.colors.ink));
+    box.addChild(new Graphics().rect(-boxWidth / 2, -boxHeight / 2, boxWidth, boxHeight).fill(theme.colors.box));
     situation.anchor.set(0.5);
     box.addChild(situation);
     box.position.set(0, top + textBox.top + boxHeight / 2);
@@ -96,8 +96,8 @@ export class CardView extends Container {
     const { width: pw, height: ph, radius: pr, padding: pp } = illustration;
     const panel = new Graphics()
       .roundRect(-pw / 2, panelY - ph / 2, pw, ph, pr)
-      .fill(theme.colors.ink)
-      .stroke({ width: 5, color: theme.colors.gold });
+      .fill(theme.colors.panel)
+      .stroke({ width: 5, color: theme.colors.panelEdge });
     this.addChild(panel);
     if (opts.texture) {
       const sprite = new Sprite(opts.texture);
@@ -114,7 +114,7 @@ export class CardView extends Container {
     } else {
       const q = new Text({
         text: '?',
-        style: { fontFamily: theme.font.family, fontSize: 160, fill: theme.colors.gold, fontWeight: 'bold' },
+        style: { fontFamily: theme.font.family, fontSize: 160, fill: theme.colors.panelEdge, fontWeight: 'bold' },
       });
       q.anchor.set(0.5);
       q.position.set(0, panelY);
@@ -122,9 +122,9 @@ export class CardView extends Container {
     }
 
     // ---- side arrows
-    this.leftArrow = new Graphics().poly([-14, 0, 8, -18, 8, 18]).fill(theme.colors.gold);
+    this.leftArrow = new Graphics().poly([-14, 0, 8, -18, 8, 18]).fill(theme.colors.arrow);
     this.leftArrow.position.set(left + 46, panelY);
-    this.rightArrow = new Graphics().poly([14, 0, -8, -18, -8, 18]).fill(theme.colors.gold);
+    this.rightArrow = new Graphics().poly([14, 0, -8, -18, -8, 18]).fill(theme.colors.arrow);
     this.rightArrow.position.set(-left - 46, panelY);
     this.leftArrow.alpha = this.rightArrow.alpha = 0.55;
     this.addChild(this.leftArrow, this.rightArrow);
@@ -160,15 +160,15 @@ export class CardView extends Container {
     tag.addChild(
       new Graphics()
         .rect(-choice.width / 2, -choice.height / 2, choice.width, choice.height)
-        .fill(theme.colors.parchment)
-        .stroke({ width: 2, color: 0xd8c3a0 }),
+        .fill(theme.colors.tag)
+        .stroke({ width: 2, color: theme.colors.tagEdge }),
     );
     const text = new Text({
       text: label,
       style: {
         fontFamily: theme.font.family,
         fontSize: theme.font.choice,
-        fill: theme.colors.parchmentText,
+        fill: theme.colors.tagText,
         align: 'center',
         wordWrap: true,
         wordWrapWidth: choice.width - 70,
@@ -184,7 +184,7 @@ export class CardView extends Container {
     tag.addChild(text);
     const arrow = new Graphics()
       .poly(side === 'left' ? [-8, 0, 4, -8, 4, 8] : [8, 0, -4, -8, -4, 8])
-      .fill(theme.colors.parchmentText);
+      .fill(theme.colors.tagText);
     arrow.position.set(side === 'left' ? -choice.width / 2 + 22 : choice.width / 2 - 22, 0);
     tag.addChild(arrow);
 

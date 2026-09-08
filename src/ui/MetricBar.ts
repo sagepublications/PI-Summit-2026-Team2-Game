@@ -5,23 +5,22 @@ import { lerp, type Tween, type Tweener } from '../utils/tween';
 
 /**
  * One HUD metric: icon, thin bar, spaced small-caps label.
- * Supports a drag preview (ghost segment + signed delta), an animated value
- * change with a colour flash, and a pinned red "failed" state.
+ * While the player drags, a single-colour dot above the icon shows how big the
+ * effect on this metric would be — never which way it goes. After a swipe the
+ * bar tweens to its new value with a white flash; near a bound it turns red,
+ * and the metric that ended the run stays pinned red.
  */
 export class MetricBar extends Container {
   private readonly icon: Sprite | Graphics;
   private readonly track = new Graphics();
   private readonly fill = new Graphics();
-  private readonly ghost = new Graphics();
+  private readonly dot = new Graphics();
   private readonly labelText: Text;
-  private readonly deltaText: Text;
 
   private value: number;
   private shown: number; // animated display value
-  private previewDelta = 0;
   private failed = false;
   private flash = 0; // 1 -> 0 after a change
-  private flashColor: number = theme.colors.gold;
   private tween: Tween | null = null;
 
   constructor(
@@ -40,40 +39,30 @@ export class MetricBar extends Container {
       s.width = s.height = iconSize;
       this.icon = s;
     } else {
-      this.icon = new Graphics().circle(0, 0, iconSize / 2 - 4).stroke({ width: 4, color: theme.colors.gold });
+      this.icon = new Graphics().circle(0, 0, iconSize / 2 - 4).stroke({ width: 4, color: theme.colors.hudIcon });
     }
     this.icon.position.set(barWidth / 2, iconSize / 2);
 
     const barY = iconSize + 22;
-    this.track.roundRect(0, barY, barWidth, barHeight, barHeight / 2).fill(theme.colors.barTrack);
+    this.track.roundRect(0, barY, barWidth, barHeight, barHeight / 2).fill({ color: theme.colors.barTrack, alpha: 0.2 });
     this.fill.position.y = barY;
-    this.ghost.position.y = barY;
+    // The preview dot sits just above the icon, centred on the column.
+    this.dot.position.set(barWidth / 2, -14);
 
     this.labelText = new Text({
       text: label,
-      style: { fontFamily: theme.font.family, fontSize: theme.font.label, fill: theme.colors.gold, letterSpacing: 4, fontWeight: 'bold' },
+      style: { fontFamily: theme.font.family, fontSize: theme.font.label, fill: theme.colors.hudLabel, letterSpacing: 4, fontWeight: 'bold' },
     });
     this.labelText.anchor.set(0.5, 0);
     this.labelText.position.set(barWidth / 2, barY + barHeight + 12);
 
-    this.deltaText = new Text({
-      text: '',
-      style: { fontFamily: theme.font.family, fontSize: theme.font.preview, fill: theme.colors.parchment, fontWeight: 'bold' },
-    });
-    this.deltaText.anchor.set(0.5, 1);
-    this.deltaText.position.set(barWidth / 2 + iconSize / 2 + 34, iconSize / 2 + 12);
-    this.deltaText.visible = false;
-
-    this.addChild(this.icon, this.track, this.fill, this.ghost, this.labelText, this.deltaText);
+    this.addChild(this.icon, this.track, this.fill, this.dot, this.labelText);
     this.redraw();
   }
 
-  /** Bar colour for a value: red near either bound, otherwise gold. */
-  private colorFor(v: number): number {
+  private inDanger(v: number): boolean {
     const { min, max } = this.balance.metrics;
-    if (this.failed) return theme.colors.bad;
-    if (v - min <= this.balance.dangerWithin || max - v <= this.balance.dangerWithin) return theme.colors.danger;
-    return theme.colors.gold;
+    return v - min <= this.balance.dangerWithin || max - v <= this.balance.dangerWithin;
   }
 
   private widthFor(v: number): number {
@@ -83,50 +72,38 @@ export class MetricBar extends Container {
 
   private redraw(): void {
     const h = theme.layout.hud.barHeight;
-    const base = this.colorFor(this.shown);
-    const color = this.flash > 0 ? this.flashColor : base;
+    const base = this.failed || this.inDanger(this.shown) ? theme.colors.danger : theme.colors.barFill;
+    const color = this.flash > 0 ? theme.colors.flash : base;
     this.fill.clear();
     const w = this.widthFor(this.shown);
     if (w > 0) this.fill.roundRect(0, 0, w, h, h / 2).fill(color);
 
-    this.ghost.clear();
-    if (this.previewDelta !== 0) {
-      const { min, max } = this.balance.metrics;
-      const target = Math.max(min, Math.min(max, this.value + this.previewDelta));
-      const from = Math.min(this.widthFor(this.value), this.widthFor(target));
-      const to = Math.max(this.widthFor(this.value), this.widthFor(target));
-      const ghostColor = this.previewDelta > 0 ? theme.colors.good : theme.colors.bad;
-      this.ghost.roundRect(from, -3, Math.max(4, to - from), h + 6, 3).fill({ color: ghostColor, alpha: 0.85 });
-    }
-
-    const labelColor = this.failed ? theme.colors.bad : theme.colors.gold;
-    this.labelText.style.fill = labelColor;
-    if (this.icon instanceof Sprite) this.icon.tint = this.failed ? theme.colors.bad : 0xffffff;
+    const tint = this.failed ? theme.colors.danger : theme.colors.hudIcon;
+    this.labelText.style.fill = this.failed ? theme.colors.danger : theme.colors.hudLabel;
+    if (this.icon instanceof Sprite) this.icon.tint = tint;
   }
 
-  /** Show what a choice would do to this metric (0 clears). */
+  /** Show how big a choice's effect on this metric would be (0 hides the dot). */
   preview(delta: number): void {
-    this.previewDelta = delta;
-    this.deltaText.visible = delta !== 0;
+    this.dot.clear();
     if (delta !== 0) {
-      this.deltaText.text = `${delta > 0 ? '+' : '−'}${Math.abs(delta)}`;
-      this.deltaText.style.fill = delta > 0 ? theme.colors.good : theme.colors.bad;
+      const r = (Math.abs(delta) / 10) * theme.layout.hud.dotRadiusPerTen;
+      this.dot.circle(0, 0, r).fill(theme.colors.previewDot);
     }
-    this.redraw();
   }
 
   /** Jump to a value with no animation (run reset). */
   reset(value: number): void {
+    this.tween?.cancel();
     this.value = this.shown = value;
-    this.previewDelta = 0;
-    this.deltaText.visible = false;
     this.failed = false;
     this.flash = 0;
+    this.preview(0);
     if (this.icon instanceof Sprite) this.icon.width = this.icon.height = theme.layout.hud.iconSize;
     this.redraw();
   }
 
-  /** Animate to a new value and flash green/red; resolves when the tween ends. */
+  /** Animate to a new value with a flash and icon pulse; resolves when the tween ends. */
   async animateTo(value: number, delta: number): Promise<void> {
     this.preview(0);
     const from = this.shown;
@@ -136,7 +113,6 @@ export class MetricBar extends Container {
       this.redraw();
       return;
     }
-    this.flashColor = delta > 0 ? theme.colors.good : theme.colors.bad;
     const ms = this.balance.anim.barTweenMs;
     this.tween?.cancel();
     this.tween = this.tweener.to(ms, (t) => {

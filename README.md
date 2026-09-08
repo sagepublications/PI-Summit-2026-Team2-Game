@@ -1,4 +1,4 @@
-# Keep It Alive – PI Summit 2026 Team 2
+# Roadmap to Ruin – PI Summit 2026 Team 2
 
 A Reigns-style swipe game: keep your product alive for as many months as you can by balancing **Team, Quality, Deadline and Budget** while every card offers a damned-if-you-do, damned-if-you-don't choice. Any metric hitting 0 **or** 100 ends the run.
 
@@ -23,7 +23,7 @@ Content is authored by the team in the shared spreadsheet, exported as CSV, vali
 
 1. Edit the spreadsheet — one card per row.
 2. In Excel: **File → Save As → "CSV UTF-8 (Comma delimited)"** → save over `content/game-content.csv`. (A plain "CSV (Comma delimited)" export is also accepted; the build re-decodes it and warns.)
-3. Put each card's picture in `public/assets/images/` named **`card-<ID>.png`** (or `.svg`, `.jpg`, `.webp`) — e.g. row with ID `29` → `card-29.png`. Filenames are case-sensitive.
+3. Put each card's picture in `public/assets/images/` named **`card-<ID>.png`** (or `.svg`, `.jpg`, `.webp`) — e.g. row with ID `29` → `card-29.png`. Filenames are case-sensitive. Generated art is best dropped as `<ID>.png` into `docs/cards/` (never `dist/`, which the build wipes) and converted to 600×900 WebP for the web; the game shows it in a 2:3 portrait panel.
 4. Run `pnpm run content`. Fix anything it reports (it names the spreadsheet row). It also runs inside `build` and `check`.
 5. Commit `content/game-content.csv`, the images and the generated `src/data/*.json`.
 

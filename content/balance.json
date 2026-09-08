@@ -14,6 +14,7 @@
   },
   "dangerWithin": 20,
   "uiStrings": {
+    "title": "Roadmap to Ruin",
     "intro": { "left": "Swipe left", "right": "Swipe right", "header": "LEARN THE ROPES" },
     "start": { "left": "Begin", "right": "Begin", "header": "A NEW VENTURE" },
     "gameover": { "left": "Try again", "right": "Try again", "header": "GAME OVER" },
