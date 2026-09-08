@@ -49,14 +49,13 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      # configure-pages reports where the site is actually hosted: "" for a
-      # root/custom/private *.pages.github.io domain, "/<repo>" for a
-      # project site on github.io. Never hard-code the sub-path.
-      - id: pages
-        uses: actions/configure-pages@v6
+      # The bundle is built with a RELATIVE base (see vite.config.ts), so it works
+      # at the site root, under /<repo>/ on github.io and on a private
+      # *.pages.github.io domain alike. Do not derive the base from
+      # configure-pages: its base_path lags behind repo visibility changes and
+      # produced root-absolute asset URLs that 404'd under the project sub-path.
+      - uses: actions/configure-pages@v6
       - run: pnpm run build
-        env:
-          VITE_BASE: ${{ steps.pages.outputs.base_path }}/
       - uses: actions/upload-pages-artifact@v5
         with:
           path: dist
