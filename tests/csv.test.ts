@@ -8,7 +8,7 @@ import { parseCardRow, type Balance } from '../src/types/content.ts';
 import rawBalance from '../content/balance.json' with { type: 'json' };
 
 const balance = rawBalance as Balance;
-const teamExport = () => decodeCsv(readFileSync(resolve(import.meta.dirname, '../docs/content-v3.csv')));
+const teamExport = () => decodeCsv(readFileSync(resolve(import.meta.dirname, '../docs/content-v4.csv')));
 
 test("the team's real export parses: headers map, trailing empty column ignored, row numbers match the sheet", () => {
   const { text, fellBack } = teamExport();

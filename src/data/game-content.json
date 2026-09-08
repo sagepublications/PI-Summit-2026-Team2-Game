@@ -975,7 +975,7 @@
     "situation": "Your new AI feature is a huge success. Unfortunately, one enthusiastic student has asked it 84,000 questions about grounded theory.",
     "illustration": {
       "file": "card-37.webp",
-      "prompt": "Student happily chatting while an enormous Sage invoice rolls out of the computer."
+      "prompt": "Rajeh happily chatting while an enormous Sage invoice rolls out of the computer."
     },
     "left": {
       "text": "Limit the questions.",
@@ -1020,6 +1020,33 @@
         "quality": -10,
         "deadline": 0,
         "budget": 20
+      }
+    }
+  },
+  {
+    "id": "39",
+    "type": "regular",
+    "situation": "A senior engineer has decided that the entire project needs rewriting. We only asked them to add a field to a form. \n\nThey say it will 'only' take 6 months.",
+    "illustration": {
+      "file": "card-39.webp",
+      "prompt": "A stamp on a document that says 'RE-DO'"
+    },
+    "left": {
+      "text": "Listen to them - it's critical to keep every engineer happy, all the time",
+      "effects": {
+        "team": 0,
+        "quality": 20,
+        "deadline": -20,
+        "budget": 0
+      }
+    },
+    "right": {
+      "text": "Ignore them, they're a perfectionist",
+      "effects": {
+        "team": 0,
+        "quality": 0,
+        "deadline": 10,
+        "budget": 0
       }
     }
   },
