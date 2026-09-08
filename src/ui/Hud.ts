@@ -35,7 +35,7 @@ export class Hud extends Container {
 
     this.titleText = new Text({
       text: balance.uiStrings.title,
-      style: { fontFamily: theme.font.family, fontSize: theme.font.title, fill: theme.colors.hudLabel, fontWeight: 'bold', letterSpacing: 2 },
+      style: { fontFamily: theme.font.family, fontSize: theme.font.title, fill: theme.colors.hudLabel, fontWeight: '800', letterSpacing: 1 },
     });
     this.titleText.anchor.set(0.5);
     this.titleText.position.set(DESIGN.width / 2, theme.layout.title.y);

@@ -60,7 +60,8 @@ src/
   game/content.ts  imports src/data JSON, re-validates, groups cards by role
   scenes/          Scene interface, SceneManager, TableScene (HUD + one card, phase machine)
   systems/run.ts   pure rules: metrics, months, deck, game over, end bands (no Pixi/DOM)
-  ui/              CardView (drag/swipe), MetricBar, Hud, theme (mock-up palette + 1080×1920 layout)
+  ui/              CardView (drag/swipe), MetricBar, Hud, theme (Sage brand palette + 1080×1920 layout)
+  assets/fonts/    Sage Peak woff2 (400/600/700/800), bundled via src/style.css
   types/content.ts Zod schemas, spreadsheet parsers, cross-card validation (shared by build + game + tests)
   utils/           rng (seeded), tween, random
   data/            generated JSON (do not edit by hand)

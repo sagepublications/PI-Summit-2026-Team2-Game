@@ -1,4 +1,37 @@
 /* Styling outside the PixiJS canvas. Keep minimal: the game lives on the canvas. */
+
+/* Sage Peak — the Sage brand typeface (faces extracted from SCP.Web). Vite bundles
+   the files, so the URLs are correct under any deployment base path. Pixi's canvas
+   text uses these once main.ts has awaited document.fonts. */
+@font-face {
+  font-family: 'Sage Peak';
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+  src: url('./assets/fonts/SagePeak-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Sage Peak';
+  font-weight: 600;
+  font-style: normal;
+  font-display: block;
+  src: url('./assets/fonts/SagePeak-600.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Sage Peak';
+  font-weight: 700;
+  font-style: normal;
+  font-display: block;
+  src: url('./assets/fonts/SagePeak-700.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Sage Peak';
+  font-weight: 800;
+  font-style: normal;
+  font-display: block;
+  src: url('./assets/fonts/SagePeak-800.woff2') format('woff2');
+}
+
 html,
 body {
   margin: 0;
@@ -8,7 +41,7 @@ body {
   overflow: hidden;
   background: #001a69; /* Sage Navy */
   color: #d9eeff; /* Sage Pale */
-  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-family: 'Sage Peak', 'Helvetica Neue', Arial, sans-serif;
   /* The card is dragged with the finger: never scroll, zoom or pull-to-refresh. */
   touch-action: none;
   overscroll-behavior: none;

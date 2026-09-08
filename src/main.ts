@@ -46,11 +46,24 @@ async function loadAssets(data: GameData): Promise<TableSceneAssets> {
   return { cards, icons };
 }
 
+/**
+ * PixiJS rasterises text with the canvas, which only uses a web font once the
+ * browser has loaded it. Wait for the faces we use, but never let a slow or
+ * missing font block the game (the CSS stack falls back to Helvetica/Arial).
+ */
+async function waitForFonts(): Promise<void> {
+  if (!('fonts' in document)) return;
+  const faces = ['400', '600', '700', '800'].map((w) => document.fonts.load(`${w} 40px "Sage Peak"`));
+  const timeout = new Promise<void>((resolve) => setTimeout(resolve, 3000));
+  await Promise.race([Promise.allSettled(faces), timeout]);
+}
+
 async function main(): Promise<void> {
   const data = loadGameData();
   const loading = document.getElementById('loading');
   if (loading) loading.textContent = data.balance.uiStrings.loading;
 
+  await waitForFonts();
   const app = new Application();
   await app.init({
     resizeTo: window,

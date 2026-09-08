@@ -41,7 +41,8 @@ export const theme = {
     danger: 0xe5484d,
   },
   font: {
-    family: 'Georgia, "Times New Roman", Times, serif',
+    /** Sage Peak is loaded in src/style.css and awaited in main.ts before any text is drawn. */
+    family: '"Sage Peak", "Helvetica Neue", Arial, sans-serif',
     title: 72,
     situation: 46,
     situationMin: 30,
